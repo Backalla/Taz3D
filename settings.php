@@ -1,8 +1,1 @@
-<?php
-require_once("header.php");
-?>
-
-
-<?php
-require_once("footer.php");
-?>
+I am the settings page

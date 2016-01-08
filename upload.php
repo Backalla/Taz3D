@@ -1,39 +1,4 @@
 
-<?php
-require_once("header.php");
-if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
-{
-  // echo "<script>alert('File uploaded')</script>";
-  $file_number = 1;
-  $upload_dir = "cws/";
-  $file_upload_path = $upload_dir.basename($_FILES['cws_file']['name']);
-  $file_extension =  strtolower(pathinfo($file_upload_path,PATHINFO_EXTENSION));
-  if($file_extension == "cws")
-  {
-    // echo "<script>alert('cws')</script>";
-    while(file_exists($file_upload_path))
-    {
-      $file_upload_path = $upload_dir.basename($_FILES['cws_file']['name'],".".$file_extension).$file_number.".".$file_extension;
-      $file_number = $file_number+1;
-    }
-    if(move_uploaded_file($_FILES['cws_file']['tmp_name'], $file_upload_path))
-      echo "<script>alert('File uploaded successfully')</script>";
-    else
-      echo "<script>alert('File not uploaded')</script>";
-    $filename = basename($file_upload_path,".".$file_extension);
-    // echo "sudo chown pi:pi ".$file_upload_path;
-    system("mkdir cws/".$filename);
-    // system("mv $file_upload_path cws/".$filename);
-    system("mv blank.png cws/".$filename);
-    exec("sudo 7z e cws/".$filename.".cws -ocws/".$filename."/");
-  }
-  else
-    echo "<script>alert('Invalid file')</script>";
-
-
-
-}
-?>
 <script>
 $(document).ready(function()
 {
@@ -71,7 +36,8 @@ $(document).ready(function()
                     <h2>Upload new CWS file</h2>
                     <div class="clearfix"></div>
                 </div>
-                <form action="upload.php" method="post" enctype="multipart/form-data">
+                <form action="upload.php" class="dropzone"></form>
+                <form action="index.php" method="post" enctype="multipart/form-data" id="upload_form">
                     <span class="btn btn-success btn-file">
                         Browse <input type="file" name="cws_file" id="cws_file">
                     </span>
@@ -86,8 +52,3 @@ $(document).ready(function()
 </div>
 
 
-
-
-<?php
-require_once("footer.php");
-?>
