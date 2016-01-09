@@ -1,40 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', "1");
-$uploaded=0;
-if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
-{
-  // echo "<script>alert('File uploaded')</script>";
-  $file_number = 1;
-  
-  $upload_dir = "cws/";
-  $file_upload_path = $upload_dir.basename($_FILES['cws_file']['name']);
-  $file_extension =  strtolower(pathinfo($file_upload_path,PATHINFO_EXTENSION));
-  if($file_extension == "cws")
-  {
-    // echo "<script>alert('cws')</script>";
-    while(file_exists($file_upload_path))
-    {
-      $file_upload_path = $upload_dir.basename($_FILES['cws_file']['name'],".".$file_extension).$file_number.".".$file_extension;
-      $file_number = $file_number+1;
-    }
-    if(move_uploaded_file($_FILES['cws_file']['tmp_name'], $file_upload_path))
-    {
-        echo "<script>alert('File uploaded successfully');</script>";
-        $uploaded =1;
-    }
-    else
-      echo "<script>alert('File not uploaded')</script>";
-    $filename = basename($file_upload_path,".".$file_extension);
-    // echo "sudo chown pi:pi ".$file_upload_path;
-    system("mkdir cws/".$filename);
-    // system("mv $file_upload_path cws/".$filename);
-    system("mv blank.png cws/".$filename);
-    exec("sudo 7z e cws/".$filename.".cws -ocws/".$filename."/");
-  }
-  else
-    echo "<script>alert('Invalid file')</script>";
-}
+
 
 ?>
 <!DOCTYPE html>
@@ -60,10 +27,8 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
     <link href="css/custom.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/maps/jquery-jvectormap-2.0.1.css" />
     <link href="css/icheck/flat/green.css" rel="stylesheet" />
-    <link href="css/dropzone.css" rel="stylesheet" />
 
     <link href="css/floatexamples.css" rel="stylesheet" type="text/css" />
-    <script src="js/dropzone.js"></script>
 
     <script src="js/jquery.min.js"></script>
     <script src="js/nprogress.js"></script>
@@ -186,42 +151,6 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
 
                       });
                 }
-                $(document).ready(function(){
-                    <?php 
-                    if($uploaded == 0)
-                        echo 'load_page("main.php")';
-                    else
-                        echo 'load_page("upload.php")';
-                     ?>
-                    // $("#submit_cws_upload").click(function(){
-                    //     $("#upload_form").submit(function()
-                    //     {
-                    //         load_page("upload.php");
-                    //         return false;
-                    //     });
-                    // });
-                    
-                });
-                // $(document).ready(function()
-                // {
-                //     var page = 
-                //     <?php 
-                //     if($uploaded)
-                //         echo '"upload.php"'
-                //     else
-                //         echo '"main.po"';
-                //     ?>
-                //     $("#page_index").click(function(){
-                //         page="main.php";
-                //         alert(page);
-                //     });
-                //     $("#page_prints").click(function(){
-                //         page="prints.php";
-                //         alert(page);
-                //     });
-                //     load_page(page);
-                // });
-                
                 </script>
 
 
