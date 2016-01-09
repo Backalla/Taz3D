@@ -31,6 +31,8 @@ ini_set('display_errors', "1");
     <link href="css/floatexamples.css" rel="stylesheet" type="text/css" />
 
     <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.form.min.js"></script>
+
     <script src="js/nprogress.js"></script>
     <script>
         NProgress.start();
@@ -151,6 +153,9 @@ ini_set('display_errors', "1");
 
                       });
                 }
+                $(document).ready(function(){
+                    load_page("main.php");
+                });
                 </script>
 
 

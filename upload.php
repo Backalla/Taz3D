@@ -1,9 +1,37 @@
-
 <script>
+var main = function()
+{
+   $("#upload").on('submit',function(e)
+                   {
+    e.preventDefault();   
+       $(this).ajaxSubmit(
+       
+           {
+            beforeSend:function()
+               {
+                $("#prog").show();
+                $("#prog").attr('style','width: 0%');
+                   
+               },
+               uploadProgress:function(event,position,total,percentCompelete)
+               {
+                  $("#prog").attr('style','width: '+percentCompelete+'%'); 
+                   $("#percent").html(percentCompelete+'%');
+               },
+               success:function(data)
+               {
+                   $("#here").html(data);
+               }
+           });
+   });
+};
+
+$(document).ready(main);
 $(document).ready(function()
 {
   $("#cws_file").change(function()
   {
+    $("#prog").attr('style','width: 0%');
     var filename = $("#cws_file")[0].files[0].name;
     var extension = filename.substr((filename.lastIndexOf('.') +1)).toLowerCase();
     if(extension=="cws")
@@ -18,7 +46,12 @@ $(document).ready(function()
     }
   });
 });
+
 </script>
+
+
+
+<div id="here"></div>
 <div class="">
     <div class="page-title">
         <div class="title_left">
@@ -36,8 +69,7 @@ $(document).ready(function()
                     <h2>Upload new CWS file</h2>
                     <div class="clearfix"></div>
                 </div>
-                <form action="upload.php" class="dropzone"></form>
-                <form action="index.php" method="post" enctype="multipart/form-data" id="upload_form">
+                <form action="handle_upload.php" method="post" enctype="multipart/form-data" id="upload">
                     <span class="btn btn-success btn-file">
                         Browse <input type="file" name="cws_file" id="cws_file">
                     </span>
@@ -46,6 +78,11 @@ $(document).ready(function()
                     </button>
                     <p id="selected_filename"></p>
                 </form>
+                <div class="progress">
+                  <div id = "prog" class="progress-bar" role="progressbar" style="width: 0%;">
+                    <span class="sr-only">60% Complete</span>
+                  </div>
+                </div>
             </div>
         </div>
     </div>
