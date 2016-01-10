@@ -57,7 +57,6 @@ $(document).ready(function()
         <div class="title_left">
             <h3>File Manager</h3>
         </div>
-
     </div>
     <div class="clearfix"></div>
 

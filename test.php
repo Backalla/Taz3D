@@ -1,13 +1,4 @@
 <?php
-ini_set('display_errors', "1");
-if(isset($_POST))
-{
-	$x = $_POST['page'];
-	require_once($x);
-}
-else
-	echo '<script>alert("Not")</script>';
-
+$fi = new FilesystemIterator("cws/", FilesystemIterator::SKIP_DOTS);
+echo iterator_count($fi);
 ?>
-
-<!-- I am test page -->
