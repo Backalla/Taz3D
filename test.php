@@ -14,15 +14,25 @@ ini_set('display_errors', 'on');
  
 // // for (;1;)
 // // {
-// $serial->sendMessage("G0 X50");
-// // }
+// $serial->sendMessage("G0 X30");
+// }
  
 // echo "I've sended a message! \n\r";
 // phpinfo();
-$d=rand(0,100);
-// exec('echo "G91" > /dev/ttyUSB0');
-system("./printrun/pronsole.py");
-system("help");
-system('echo "G0 X'.$d.'" > /dev/ttyUSB0');
-echo $d;
+// $d=rand(0,100);
+if(isset($_GET['c']))
+{
+exec("sudo chmod 777 /dev/ttyUSB0");
+exec("stty -F /dev/ttyUSB0 raw speed 115200 -echo -hupcl");
+exec('echo "'.$_GET['c'].'" > /dev/ttyUSB0');
+
+// $fp = fopen('/dev/ttyUSB0','w');
+// sleep(5);
+// fwrite($fp, "G0 X".$d);
+echo $_GET['c'];
+}
 ?>
+<form action="test.php" method="get">
+	<input type="text" name='c'>
+	<input type = "submit" value="Send!">
+</form>

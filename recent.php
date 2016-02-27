@@ -1,12 +1,12 @@
 <?php 
-$xml = simplexml_load_file("printer.xml") or die("Something went wrong!! Try updating the software..");
+$xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try updating the software..");
 
 if(isset($_POST['d']) && !empty($_POST['d']))
 {
 	$delete_filename = $_POST['d'];
 
 	$doc = new DOMDocument; 
-	$doc->load('printer.xml');
+	$doc->load('cws_files.xml');
 	$matchingElements  = $doc->getElementsByTagName("print");
 	$totalMatches     = $matchingElements->length;
 	echo $totalMatches;
@@ -27,7 +27,7 @@ if(isset($_POST['d']) && !empty($_POST['d']))
 	    $elementToDelete->parentNode->removeChild($elementToDelete);
 	}
 
-	$doc->save("printer.xml");
+	$doc->save("cws_files.xml");
     exec("sudo rm -rf cws/".$delete_filename."/");
     exec("sudo rm cws/".$delete_filename.".cws");
 }

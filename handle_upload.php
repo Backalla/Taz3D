@@ -28,7 +28,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         exec("sudo 7z e cws/".$filename.".cws -ocws/".$filename."/");
         $fi = new FilesystemIterator("cws/".$filename."/", FilesystemIterator::SKIP_DOTS);
         $slices = iterator_count($fi)-5;
-        $xml = simplexml_load_file('printer.xml');
+        $xml = simplexml_load_file('cws_files.xml');
         $print = $xml->addChild('print');
         $print->addChild('filename', basename($_FILES['cws_file']['name'],".".$file_extension));
         $print->addChild('slices', $slices);
@@ -37,7 +37,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         $print->addChild('uploaded', time());
 
 
-        file_put_contents('printer.xml', $xml->asXML());
+        file_put_contents('cws_files.xml', $xml->asXML());
     }
     else
       echo "<script>alert('File not uploaded')</script>";
