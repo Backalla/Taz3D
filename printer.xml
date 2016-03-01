@@ -2,7 +2,7 @@
 <printer>
 	<print_no>1</print_no>
 	<filename>test</filename>
-	<state>2</state>
+	<state>1</state>
 	<total_slices>619</total_slices>
 	<completed_slices>50</completed_slices>
 	<total_time>2476</total_time>

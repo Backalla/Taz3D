@@ -2,16 +2,15 @@
 <prints>
 	<print>
 		<filename>platetry1</filename>
-		<slices>321</slices>
-		<print_time>1284</print_time>
-		<last_printed>1452555388</last_printed>
-		<uploaded>1452555388</uploaded>
-	</print>
-	<print>
-		<filename>test</filename>
-		<slices>619</slices>
-		<print_time>2476</print_time>
-		<last_printed>1452564352</last_printed>
-		<uploaded>1452564352</uploaded>
+		<slices>294</slices>
+		<print_time>01:02:02</print_time>
+		<last_printed>1452571217</last_printed>
+		<uploaded>1452571217</uploaded>
+		<blank_time>10800</blank_time>
+		<selected_resin>Low Green</selected_resin>
+		<slice_height>50</slice_height>
+		<layer_exposure>1700</layer_exposure>
+		<bottom_exposure>7000</bottom_exposure>
+		<number_bottom_layers>7</number_bottom_layers>
 	</print>
 </prints>
