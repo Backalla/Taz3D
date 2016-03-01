@@ -1,0 +1,21 @@
+Tue Mar  1 14:48:38 2016 : Printing test
+Tue Mar  1 14:48:38 2016 : Sending: G21
+Tue Mar  1 14:48:38 2016 : Sending: G91
+Tue Mar  1 14:48:38 2016 : Sending: M17
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-100 F300
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-15 F80
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-3.95 F200.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-3.95 F200.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-3.95 F200.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-3.95 F200.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-3.95 F200.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-3.95 F200.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z-3.95 F200.0
+Tue Mar  1 14:48:38 2016 : Sending: G1 Z4.0 F25.0

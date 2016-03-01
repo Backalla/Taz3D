@@ -1,53 +1,39 @@
 <?php 
+require_once("allthefunctions.php");
 $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try updating the software..");
 
-if(isset($_POST['d']) && !empty($_POST['d']))
-{
-	$delete_filename = $_POST['d'];
 
-	$doc = new DOMDocument; 
-	$doc->load('cws_files.xml');
-	$matchingElements  = $doc->getElementsByTagName("print");
-	$totalMatches     = $matchingElements->length;
-	echo $totalMatches;
-	$elementsToDelete = array();
-	for ($i = 0; $i < $totalMatches; $i++){
-		$nodes = $matchingElements->item($i)->getElementsByTagName("filename");
-		print_r($nodes);
-		foreach ($nodes as $node)
-		{
-			print_r($node);
-			if($node->nodeValue == $delete_filename)
-				$elementsToDelete[] = $matchingElements->item($i);
-		}
-	    // $elementsToDelete[] = $matchingElements->item($i);
-	}
-
-	foreach ( $elementsToDelete as $elementToDelete ) {
-	    $elementToDelete->parentNode->removeChild($elementToDelete);
-	}
-
-	$doc->save("cws_files.xml");
-    exec("sudo rm -rf cws/".$delete_filename."/");
-    exec("sudo rm cws/".$delete_filename.".cws");
-}
 ?>
 <script>
 
 	function delete_file(file)
 	{
 		// alert(file);
-		$.ajax({
-		    url : "recent.php",
-		    type: "POST",
-		    data : {'d':file},
-		    success: function(data, textStatus, jqXHR)
+		$.post("allthefunctions.php",
+		    {
+                'funct':'delete',
+                'param':file
+            },
+		    function(data,status)
 		    {
 		    	// alert("Deleted successfully : "+file);
 		    	load_page("recent.php");
-		    }
-		  });
+		    
+            });
 	}
+
+    function print_file(file)
+    {
+        alert("printing : "+file);
+        $.post("allthefunctions.php",
+            {
+                'funct': "print",
+                'param': file
+            },
+            function(data, status){
+                load_page("main.php");
+            });
+    }
 </script>
 <div class="row">
 
@@ -86,7 +72,7 @@ if(isset($_POST['d']) && !empty($_POST['d']))
                             <td class=" "><?php echo $prints->slices; ?></td>
                             <td class=" "><?php echo $prints->print_time ?> seconds</td>
                             <td class="a-right a-right ">
-                            	<button type="button" class="btn btn-success btn-sm"><i class="fa fa-bolt"></i> Print </button>
+                            	<button type="button" class="btn btn-success btn-sm" onclick="print_file('<?php echo $prints->filename;  ?>')"><i class="fa fa-bolt"></i> Print </button>
                             	<button type="button" class="btn btn-danger btn-sm" onclick="delete_file('<?php echo $prints->filename;  ?>')"><i class="fa fa-trash"></i> Delete </button>
                             </td>
                             </td>

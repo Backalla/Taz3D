@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<printer>
+	<print_no>1</print_no>
+	<filename>test</filename>
+	<state>2</state>
+	<total_slices>619</total_slices>
+	<completed_slices>50</completed_slices>
+	<total_time>2476</total_time>
+	<remaining_time>400</remaining_time>
+	<message>Printing test.cws</message>
+	<pause>0</pause>
+	<resume>0</resume>
+	<stop>0</stop>
+	<current_z>0</current_z>
+</printer>
