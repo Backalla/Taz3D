@@ -66,14 +66,43 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                         ?>
                         <tr class="odd pointer">
                             
-                            <td class=" "><?php echo $prints->filename; ?></td>
+                            <td class=" " data-toggle="modal" data-target=".<?php echo $prints->filename?>_modal"><a href="#" onclick="return false;"><strong><?php echo $prints->filename; ?></strong></a></td>
                             <td class=" "><?php echo date("F j, Y, g:i a",intval($prints->uploaded)); ?></td>
                             <td class=" "><?php echo date("F j, Y, g:i a",intval($prints->last_printed)); ?></td>
                             <td class=" "><?php echo $prints->slices; ?></td>
-                            <td class=" "><?php echo $prints->print_time ?> seconds</td>
+                            <td class=" "><?php echo $prints->print_time ?></td>
                             <td class="a-right a-right ">
                             	<button type="button" class="btn btn-success btn-sm" onclick="print_file('<?php echo $prints->filename;  ?>')"><i class="fa fa-bolt"></i> Print </button>
                             	<button type="button" class="btn btn-danger btn-sm" onclick="delete_file('<?php echo $prints->filename;  ?>')"><i class="fa fa-trash"></i> Delete </button>
+                                <!-- Modal for file info start -->
+                                <div class="modal fade <?php echo $prints->filename?>_modal" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                                                </button>
+                                                <h4 class="modal-title" id="myModalLabel2"><strong><?php echo $prints->filename; ?></strong></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row"><strong>Uploaded on : </strong><?php echo date("F j, Y, g:i a",intval($prints->uploaded)); ?></div>
+                                                <div class="row"><strong>Last printed on : </strong><?php echo date("F j, Y, g:i a",intval($prints->last_printed)); ?></div>
+                                                <div class="row"><strong>Layer height : </strong><?php echo $prints->slice_height." microns"; ?></div>
+                                                <div class="row"><strong>Expected print time : </strong><?php echo $prints->print_time ?></div>
+                                                <div class="row"><strong>Number of slices : </strong><?php echo $prints->slices ?></div>
+                                                <div class="row"><strong>Layer exposure time : </strong><?php echo $prints->layer_exposure." ms" ?></div>
+                                                <div class="row"><strong>Bottom exposure time : </strong><?php echo $prints->bottom_exposure." ms" ?></div>
+                                                <div class="row"><strong>Number of bottom layers : </strong><?php echo $prints->number_bottom_layers ?></div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Modal for file info end -->
                             </td>
                             </td>
                         </tr>
