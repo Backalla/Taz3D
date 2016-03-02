@@ -1,16 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <prints>
 	<print>
-		<filename>platetry1</filename>
-		<slices>294</slices>
-		<print_time>01:02:02</print_time>
-		<last_printed>1452571217</last_printed>
-		<uploaded>1452571217</uploaded>
+		<cws_id>1</cws_id>
+		<filename>Some pendant</filename>
+		<slices>148</slices>
+		<print_time>00:32:06</print_time>
+		<last_printed>1452589239</last_printed>
+		<uploaded>1452589239</uploaded>
 		<blank_time>10800</blank_time>
-		<selected_resin>Low Green</selected_resin>
+		<selected_resin>Default</selected_resin>
 		<slice_height>50</slice_height>
 		<layer_exposure>1700</layer_exposure>
-		<bottom_exposure>7000</bottom_exposure>
-		<number_bottom_layers>7</number_bottom_layers>
+		<bottom_exposure>10000</bottom_exposure>
+		<number_bottom_layers>8</number_bottom_layers>
+	</print>
+	<print>
+		<cws_id>3</cws_id>
+		<filename>Some pendant1</filename>
+		<slices>148</slices>
+		<print_time>00:32:06</print_time>
+		<last_printed>1452589491</last_printed>
+		<uploaded>1452589491</uploaded>
+		<blank_time>10800</blank_time>
+		<selected_resin>Default</selected_resin>
+		<slice_height>50</slice_height>
+		<layer_exposure>1700</layer_exposure>
+		<bottom_exposure>10000</bottom_exposure>
+		<number_bottom_layers>8</number_bottom_layers>
+	</print>
+	<print>
+		<cws_id>4</cws_id>
+		<filename>Some pendant2</filename>
+		<slices>148</slices>
+		<print_time>00:32:06</print_time>
+		<last_printed>1452589633</last_printed>
+		<uploaded>1452589633</uploaded>
+		<blank_time>10800</blank_time>
+		<selected_resin>Default</selected_resin>
+		<slice_height>50</slice_height>
+		<layer_exposure>1700</layer_exposure>
+		<bottom_exposure>10000</bottom_exposure>
+		<number_bottom_layers>8</number_bottom_layers>
 	</print>
 </prints>

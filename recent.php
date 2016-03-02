@@ -22,13 +22,13 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
             });
 	}
 
-    function print_file(file)
+    function print_file(file,cws_id)
     {
         alert("printing : "+file);
         $.post("allthefunctions.php",
             {
                 'funct': "print",
-                'param': file
+                'param': {'file':file,'cws_id':cws_id}
             },
             function(data, status){
                 load_page("main.php");
@@ -66,16 +66,16 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                         ?>
                         <tr class="odd pointer">
                             
-                            <td class=" " data-toggle="modal" data-target=".<?php echo $prints->filename?>_modal"><a href="#" onclick="return false;"><strong><?php echo $prints->filename; ?></strong></a></td>
+                            <td class=" " data-toggle="modal" data-target=".<?php echo $prints->cws_id?>_modal"><a href="#" onclick="return false;"><strong><?php echo $prints->filename; ?></strong></a></td>
                             <td class=" "><?php echo date("F j, Y, g:i a",intval($prints->uploaded)); ?></td>
                             <td class=" "><?php echo date("F j, Y, g:i a",intval($prints->last_printed)); ?></td>
                             <td class=" "><?php echo $prints->slices; ?></td>
                             <td class=" "><?php echo $prints->print_time ?></td>
                             <td class="a-right a-right ">
-                            	<button type="button" class="btn btn-success btn-sm" onclick="print_file('<?php echo $prints->filename;  ?>')"><i class="fa fa-bolt"></i> Print </button>
+                            	<button type="button" class="btn btn-success btn-sm" onclick="print_file('<?php echo $prints->filename;  ?>','<?php echo $prints->cws_id;  ?>')"><i class="fa fa-bolt"></i> Print </button>
                             	<button type="button" class="btn btn-danger btn-sm" onclick="delete_file('<?php echo $prints->filename;  ?>')"><i class="fa fa-trash"></i> Delete </button>
                                 <!-- Modal for file info start -->
-                                <div class="modal fade <?php echo $prints->filename?>_modal" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal fade <?php echo $prints->cws_id?>_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-sm">
                                         <div class="modal-content">
 

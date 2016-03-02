@@ -4,7 +4,16 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 	if($_POST['funct'] == 'delete')  // function to delete a cws file. Called from recent.php
 	{
 		$delete_filename = $_POST['param'];
-
+		$cws_files_xml = simplexml_load_file("cws_files.xml");
+		foreach ($cws_files_xml as $cws_file)
+		{
+		  // echo $cws_file->filename;
+		  if((string)$cws_file->filename == $delete_filename)
+		  {
+		  	$cws_id = $cws_file->cws_id;
+		  	break;
+		  }
+		}
 		$doc = new DOMDocument; 
 		$doc->load('cws_files.xml');
 		$matchingElements  = $doc->getElementsByTagName("print");
@@ -28,13 +37,15 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 		}
 
 		$doc->save("cws_files.xml");
-	    exec("sudo rm -rf cws/".$delete_filename."/");
-	    exec("sudo rm cws/".$delete_filename.".cws");
+	    exec("sudo rm -rf cws/".$cws_id."/");
+	    exec("sudo rm cws/".$cws_id.".cws");
 	}
 	if($_POST['funct'] == 'print')
 	{
 		// echo "<script>alert('printing from allthefunstions')</script>";
-		$print_filename = $_POST['param'];
+		$print_file = $_POST['param'];
+		$print_filename = $print_file['file'];
+		$print_cws_id = $print_file['cws_id'];
 		$printer_xml = simplexml_load_file("printer.xml");
 		$file_info_xml = simplexml_load_file("cws_files.xml");
 		$state = $printer_xml->state;
@@ -43,17 +54,8 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 		if($state=='1')  // check if machine is in ready state
 		{
 			$printer_xml->state='2';  // set machine to printing state
-			$printer_xml->filename = $_POST['param'];
-			$printer_xml->print_no = 1;
-			foreach ($file_info_xml->children() as $cws_file)
-			{
-				if($cws_file->filename == $print_filename)
-				{
-					$printer_xml->total_time = $cws_file->print_time;
-					$printer_xml->total_slices = $cws_file->slices;
-					break;
-				}
-			}
+			$printer_xml->filename = $print_filename;
+			$printer_xml->cws_id=$print_cws_id;
 			$printer_xml->message="Printing ".$print_filename.".cws";
 		}
 		$printer_xml->asXML('printer.xml');
