@@ -89,6 +89,7 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                                                 <div class="row"><strong>Last printed on : </strong><?php echo date("F j, Y, g:i a",intval($prints->last_printed)); ?></div>
                                                 <div class="row"><strong>Layer height : </strong><?php echo $prints->slice_height." microns"; ?></div>
                                                 <div class="row"><strong>Expected print time : </strong><?php echo $prints->print_time ?></div>
+                                                <div class="row"><strong>Resin : </strong><?php echo $prints->selected_resin ?></div>
                                                 <div class="row"><strong>Number of slices : </strong><?php echo $prints->slices ?></div>
                                                 <div class="row"><strong>Layer exposure time : </strong><?php echo $prints->layer_exposure." ms" ?></div>
                                                 <div class="row"><strong>Bottom exposure time : </strong><?php echo $prints->bottom_exposure." ms" ?></div>
