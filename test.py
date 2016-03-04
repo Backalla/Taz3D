@@ -1,90 +1,48 @@
-# import xml.etree.ElementTree as ET
-# tree = ET.parse('printer.xml')
-# root = tree.getroot()
-# print root.find("state").text==1
-
-
- 
-import serial
-import time
- 
-# Open grbl serial port
-s = serial.Serial('/dev/ttyUSB0',115200)
- 
-# Open g-code file
-# f = open('somefile.gcode','r');
- 
-# Wake up grbl
-s.write("\r\n\r\n")
-time.sleep(2)   # Wait for grbl to initialize
-s.flushInput()  # Flush startup text in serial input
-
-while True:
-    l=raw_input().strip()
-    s.write(l + '\n') # Send g-code block to grbl
-    grbl_out = s.readline() # Wait for grbl response with carriage return
-    print ' : ' + grbl_out.strip()
-
-
-# Stream g-code to grbl
-# for line in f:
-#     l = line.strip() # Strip all EOL characters for streaming
-#     print 'Sending: ' + l,
-#     s.write(l + '\n') # Send g-code block to grbl
-#     grbl_out = s.readline() # Wait for grbl response with carriage return
-#     print ' : ' + grbl_out.strip()
- 
-# Wait here until grbl is finished to close serial port and file.
-raw_input("  Press <Enter> to exit and disable grbl.")
- 
-# Close file and serial port
-f.close()
-s.close()
-
-
-
-
-
 # import serial
 # import time
-# import sys
 # import xml.etree.ElementTree as ET
-# time_now = time.asctime( time.localtime(time.time()))
-# log_file=open('dlp.log','w')
 
-# def log(s):
-#     time_log = time_now+" : "+s+"\n"
-#     log_file.write(time_log)
+# gcode_xml=ET.parse('cws/3/Pendant 1_gcode.xml')
+# root=gcode_xml.getroot()
+# header=root.find('header').text
+# print header.split('\n')
+# dlp_serial = serial.Serial('/dev/ttyUSB0',115200)
+# dlp_serial.write("\r\n\r\n")
+# time.sleep(2)
+# dlp_serial.flushInput()
+
+# def wait_gcode(l):
+#     dlp_serial.write(l+'\n')
+#     dlp_serial.readline()
+#     dlp_serial.write('M400\n')
+#     dlp_serial.readline()
+#     # while True:
+#     #     if dlp_serial.readline() == 'ok':
+#     #         break
 
 
-# def main():
-#     while True:
-#         time.sleep(0.5)
-#         printer_xml = ET.parse('printer.xml') #parse printer.xml
-#         printer_root = printer_xml.getroot()
-#         if printer_root.find("state").text == '2':
-#             cws_id = printer_root.find("cws_id").text
-#             filename = printer_root.find("filename").text            
-#             log("Printing "+filename)
-#             filepath = "cws/"+cws_id+"/"+filename+".gcode"
-#             s = serial.Serial('/dev/ttyUSB0',115200)
-#             f = open(filepath,'r');            
-#             s.write("\r\n\r\n")
-#             time.sleep(2)
-#             s.flushInput()
-#             for line in f:
-#                 l=line[:line.find(";")] # Remove comments from gcode
-#                 l = l.strip() # Strip all EOL characters for streaming
-#                 # print l
-#                 if len(l) == 0:
-#                     continue
-#                 s.write(l + '\n') # Send g-code block to grbl
-#                 grbl_out = s.readline() # Wait for grbl response with carriage return
-#             f.close()
-#             s.close()
+# while True:
+#     print "ready"
+#     l=raw_input().strip()
+#     wait_gcode(l)
+import os, sys
+import Tkinter
+import Image, ImageTk
+import time
 
-# if __name__ == '__main__':
-#     main()
-#     log_file.close()
+def button_click_exit_mainloop (event):
+    event.widget.quit() # this will cause mainloop to unblock.
 
-# log_file.close()
+root = Tkinter.Tk()
+# root.bind("<Button>", button_click_exit_mainloop)
+root.geometry('+%d+%d' % (100,100))
+image1 = Image.open('cws/3/Pendant 10005.png')
+root.geometry('%dx%d' % (image1.size[0],image1.size[1]))
+tkpi = ImageTk.PhotoImage(image1)
+label_image = Tkinter.Label(root, image=tkpi)
+label_image.place(x=0,y=0,width=image1.size[0],height=image1.size[1])
+# root.title(f)
+# if old_label_image is not None:
+#     old_label_image.destroy()
+# old_label_image = label_image
+root.mainloop(200)

@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <printer>
 	<print_no>0</print_no>
 	<cws_id>3</cws_id>
-	<filename>Some pendant</filename>
+	<filename>Pendant 1</filename>
 	<state>2</state>
 	<total_slices>619</total_slices>
 	<completed_slices>50</completed_slices>
