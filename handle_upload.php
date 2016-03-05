@@ -44,7 +44,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         $slices_xml_element = $manifest_xml->Slices->children();
         $slices = count($slices_xml_element);
 
-        $slicing_config_xml = simplexml_load_file("cws/".$cws_id."/default.slicing");
+        $slicing_config_xml = simplexml_load_file("cws/".$cws_id."/Taz3D.slicing");
         $blank_time = $slicing_config_xml->BlankTime;
         $selected_resin = $slicing_config_xml->SelectedInk;
         foreach ($slicing_config_xml->{'InkConfig'} as $resin)
