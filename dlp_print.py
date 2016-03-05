@@ -2,6 +2,8 @@ import serial
 import time
 import sys
 import xml.etree.ElementTree as ET
+import Tkinter
+import Image, ImageTk
 time_now = time.asctime( time.localtime(time.time()))
 # initialise all the files
 
@@ -19,6 +21,20 @@ dlp_serial = serial.Serial('/dev/ttyUSB0',115200)
 dlp_serial.write("\r\n\r\n")
 time.sleep(2)
 dlp_serial.flushInput()
+
+
+def display_slice(image_path, layer_time):
+  root = Tkinter.Tk()
+  root.geometry('+%d+%d' % (100,100))
+  slice_image = Image.open(image_path)
+  w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+  root.overrideredirect(1) 
+  root.geometry("%dx%d+0+0" % (slice_image.size[0], slice_image.size[1]))
+  tk_slice_image = ImageTk.PhotoImage(slice_image)
+  label_image = Tkinter.Label(root, image=tk_slice_image)
+  label_image.place(x=0,y=0,width=slice_image.size[0],height=slice_image.size[1])
+  root.after(layer_time, lambda: root.destroy())
+  root.mainloop()
 
 def set_printer_info(field,value):
   printer_xml = ET.parse('printer.xml')
@@ -67,7 +83,6 @@ def main():
       gcode_file = open('cws/'+cws_id+'/'+filename+'.gcode','r')
       
       # make xml file by removing comments from gcode file
-
       gcode_xml = open('cws/'+cws_id+'/'+filename+'_gcode.xml','w')
       for line in gcode_file:
         l=line[:line.find(";")]
@@ -78,6 +93,9 @@ def main():
 
 
       # Actual printing process
+      manifest_xml = ET.parse('cws/'+cws_id+'/manifest.xml')
+      manifest_root = manifest_xml.getroot()
+      all_slice_names = manifest_root.find('Slices').findall('Slice')
       gcode_xml=ET.parse('cws/'+cws_id+'/'+filename+'_gcode.xml')
       gcode_root=gcode_xml.getroot()
       header=gcode_root.find('header').text
@@ -89,13 +107,22 @@ def main():
           send_gcode(gcode.strip())
 
       for cur_slice in gcode_root.findall('slice'):
-        cur_slice_no = cur_slice.get('no')
+        cur_slice_no = int(cur_slice.get('no'))
         layer_time = int(cur_slice.find('layer_time').text)
         lift_gcode = cur_slice.find('lift_gcode').text
         blanktime = int(cur_slice.find('blanktime').text)
-        
-        # Display the image here
+        cur_slice_name = all_slice_names[cur_slice_no].find('name').text
+        print cur_slice_no, cur_slice_name
 
+        # time.sleep(1)
+        # Display the image here
+        display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
+        # display_slice('blank.png',blanktime)
+        lift_gcode=lift_gcode.split('\n')
+        for gcode in lift_gcode:
+          if len(gcode)>0:
+            print gcode
+            send_gcode(gcode.strip())
 
 
 

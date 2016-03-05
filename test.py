@@ -1,3 +1,10 @@
+import xml.etree.ElementTree as ET
+xml=ET.parse('cws/3/manifest.xml')
+root=xml.getroot()
+slices = root.find('Slices').findall('Slice')
+
+print slices[0].find('name').text
+
 # import serial
 # import time
 # import xml.etree.ElementTree as ET
@@ -25,24 +32,32 @@
 #     print "ready"
 #     l=raw_input().strip()
 #     wait_gcode(l)
-import os, sys
-import Tkinter
-import Image, ImageTk
-import time
+# import os, sys
+# import Tkinter
+# import Image, ImageTk
+# import time
 
-def button_click_exit_mainloop (event):
-    event.widget.quit() # this will cause mainloop to unblock.
+# def display_slice(image_path, layer_time):
+#   root = Tkinter.Tk()
+#   root.geometry('+%d+%d' % (100,100))
+#   slice_image = Image.open(image_path)
+#   w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+#   root.overrideredirect(1) 
+#   root.geometry("%dx%d+0+0" % (slice_image.size[0], slice_image.size[1]))
+#   tk_slice_image = ImageTk.PhotoImage(slice_image)
+#   label_image = Tkinter.Label(root, image=tk_slice_image)
+#   label_image.place(x=0,y=0,width=slice_image.size[0],height=slice_image.size[1])
+#   root.after(layer_time, lambda: root.destroy())
+#   root.mainloop()
 
-root = Tkinter.Tk()
-# root.bind("<Button>", button_click_exit_mainloop)
-root.geometry('+%d+%d' % (100,100))
-image1 = Image.open('cws/3/Pendant 10005.png')
-root.geometry('%dx%d' % (image1.size[0],image1.size[1]))
-tkpi = ImageTk.PhotoImage(image1)
-label_image = Tkinter.Label(root, image=tkpi)
-label_image.place(x=0,y=0,width=image1.size[0],height=image1.size[1])
-# root.title(f)
-# if old_label_image is not None:
-#     old_label_image.destroy()
-# old_label_image = label_image
-root.mainloop(200)
+# def get_time():
+#   time_now = time.asctime( time.localtime(time.time()))
+#   return time_now
+
+
+# print get_time() 
+# display_slice("cws/platetry 1/platetry10007.png",3000)
+# print get_time()
+# display_slice('blank.png',5000)
+# display_slice("cws/platetry 1/platetry10176.png",3000)
+# print get_time()
