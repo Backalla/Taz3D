@@ -49,6 +49,11 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 		$printer_xml = simplexml_load_file("printer.xml");
 		$file_info_xml = simplexml_load_file("cws_files.xml");
 		$state = $printer_xml->state;
+		foreach ($file_info_xml->children() as $print)
+		{
+			$total_slices = $print->slices;
+			$total_time = $print->print_time;
+		}
 		// echo "<script>alert('printing from allthefunstions2')</script>";
 
 		if($state=='1')  // check if machine is in ready state
@@ -57,9 +62,22 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 			$printer_xml->filename = $print_filename;
 			$printer_xml->cws_id=$print_cws_id;
 			$printer_xml->message="Printing ".$print_filename.".cws";
+			$printer_xml->total_time = $total_time;
+			$printer_xml->total_slices = $total_slices;
 		}
 		$printer_xml->asXML('printer.xml');
 	}
 
 }
 ?>
+<script>
+function secondstohms(d)
+{
+d = Number(d);
+var h = Math.floor(d / 3600);
+var m = Math.floor(d % 3600 / 60);
+var s = Math.floor(d % 3600 % 60);
+return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
+
+}
+</script>

@@ -1,1 +1,1 @@
-I am prints page
+I am prints pages

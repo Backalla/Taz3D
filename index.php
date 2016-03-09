@@ -142,6 +142,41 @@ require_once('allthefunctions.php');
 
 
                 <script>
+
+                // For main.php 
+                setInterval(function(){
+                    $.ajax({ 
+                    type: 'POST', 
+                    url: 'dlp_status.php',  
+                    dataType: 'json',
+                    success: function (data)
+                    {
+                        // alert(data.message);
+                        if(data['state'] == "1")  //If idle/ready to print state..
+                        { 
+                            $("#dashboard_status").html(data['message']);
+                            $("#dashboard_printing").hide();
+                            $("#complete_progress_div").hide(); 
+                        }
+                        if(data['state'] == "2")  //If printing state..
+                        {
+                            $("#dashboard_status").html(data['message']);
+                            $("#dashboard_printing").show();
+                            $("#dashboard_filename").html(data['filename']);
+                            $('#dashboard_total_slices').html(data['total_slices']);
+                            $('#dashboard_completed_slices').html(data['completed_slices']);
+                            $('#dashboard_total_time').html(seconds2hms(data['total_time']));
+                            $('#dashboard_elapsed_time').html(data['elapsed_time']);
+                            $('#dashboard_message').html(data['message']);
+                            $('#dashboard_percentage').html(parseInt((parseInt(data['completed_slices']) / parseInt(data['total_slices']))*100));
+                            $("#complete_progress").attr('style','width: '+(parseInt((parseInt(data['completed_slices']) / parseInt(data['total_slices']))*100))+'%'); 
+
+
+                        }
+                        
+                    }
+                });
+                },1000);
                 function load_page(page)
                 {
                     $.ajax({

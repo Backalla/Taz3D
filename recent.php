@@ -105,7 +105,7 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                                 </div>
                                 <!-- Modal for file info end -->
                             </td>
-                            </td>
+                            
                         </tr>
                         <?php
                          }
