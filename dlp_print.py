@@ -35,15 +35,19 @@ def get_printer_info(field):
   printer_field = printer_root.find(field).text
   return printer_field
 
+def read_ser():
+  while True:
+    time.sleep(0.1)
+    r = dlp_serial.read(dlp_serial.inWaiting())
+    if len(r.strip()) > 0:
+      return r
 def send_gcode(gcode):
   gcode = gcode.strip()
-  dlp_serial.write(gcode+'\n')
-  response=dlp_serial.readline()
-
 
   # Send M400 to wait for current move to finish
-  dlp_serial.write('M400\n')
-  dlp_serial.readline()
+
+  dlp_serial.write(gcode+'\nM400\n')
+  response=read_ser()
   return response
 
 
@@ -55,15 +59,26 @@ def log(s):
   log_file.close()
 
 
+def increment_elapsed_time(seconds):
+  set_printer_info('elapsed_time',float(get_printer_info('elapsed_time'))+float(seconds))
+
+
+def get_z():
+  print send_gcode('M114')
+
+
+def reset_printer():
+  set_printer_info('state','1')
+  set_printer_info('message','Ready to print')
+  set_printer_info('completed_slices',0)
+  set_printer_info('elapsed_time',0)
+  set_printer_info('message','Ready to print.')
+  set_printer_info('print_started',0)
 # initialise all the files
 
 # Also set the state to 1 at startup to deal with accidental shutdowns
 
-set_printer_info('state','1')
-set_printer_info('message','Ready to print')
-set_printer_info('completed_slices',0)
-set_printer_info('elapsed_time',0)
-set_printer_info('message','Ready to print.')
+
 # Open serial port to machine and initialise it
 try:
   dlp_serial = serial.Serial('/dev/ttyUSB0',115200)
@@ -78,6 +93,7 @@ except:
 
 def main():
   try:
+    get_z()
     while True:
       time.sleep(0.5)
       # scan printer.xml for state of printer
@@ -112,8 +128,10 @@ def main():
           if len(gcode) > 0:
             print gcode
             send_gcode(gcode.strip())
+        increment_elapsed_time(10)
         all_slices = gcode_root.findall('slice')
         for cur_slice in all_slices:
+          get_z()
           cur_slice_no = int(cur_slice.get('no'))
           layer_time = int(cur_slice.find('layer_time').text)
           lift_gcode = cur_slice.find('lift_gcode').text
@@ -123,25 +141,27 @@ def main():
           set_printer_info('completed_slices',cur_slice_no+1)
           # time.sleep(1)
           # Display the image here
-          display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
-          # display_slice('blank.png',blanktime)
+
+
+          # display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
+
+
           lift_gcode=lift_gcode.split('\n')
           for gcode in lift_gcode:
             if len(gcode)>0:
               print gcode
               send_gcode(gcode.strip())
-        
-
-        set_printer_info('state','1')
+          increment_elapsed_time((float(layer_time)/1000)+(float(blanktime)/1000))
+      reset_printer()
   except KeyboardInterrupt:
     log("Printing stopped..")
     print "Byee"
-    set_printer_info('state',1)
-
+    reset_printer()
 
 
 
 
 if __name__ == '__main__':
+  reset_printer()
   main()
 

@@ -67,17 +67,21 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 		}
 		$printer_xml->asXML('printer.xml');
 	}
+	if($_POST['funct'] == 'pause_resume')
+	{
+		// echo $_POST['param'];
+		$printer_xml = simplexml_load_file("printer.xml");
+		$state = $_POST['param'];
+		if($state == '2')
+		{
+			$printer_xml->state='3';
+		}
+		if($state == '3')
+		{
+			$printer_xml->state='2';
+		}
+		$printer_xml->asXML('printer.xml');
+	}
 
 }
 ?>
-<script>
-function secondstohms(d)
-{
-d = Number(d);
-var h = Math.floor(d / 3600);
-var m = Math.floor(d % 3600 / 60);
-var s = Math.floor(d % 3600 % 60);
-return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
-
-}
-</script>
