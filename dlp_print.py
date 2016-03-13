@@ -83,6 +83,7 @@ def reset_printer():
   set_printer_info('print_started',0)
   set_printer_info('current_z',0)
   set_printer_info('total_time',0)
+  set_printer_info('current_slice','')
 # initialise all the files
 
 # Also set the state to 1 at startup to deal with accidental shutdowns
@@ -165,6 +166,7 @@ def main():
           blanktime = int(cur_slice.find('blanktime').text)
           cur_slice_name = all_slice_names[cur_slice_no].find('name').text
           print cur_slice_no, cur_slice_name
+          set_printer_info('current_slice',cur_slice_name)
           set_printer_info('completed_slices',cur_slice_no+1)
           # Display the image here
 

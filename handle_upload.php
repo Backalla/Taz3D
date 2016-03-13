@@ -43,6 +43,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         $manifest_xml = simplexml_load_file("cws/".$cws_id."/manifest.xml");
         $slices_xml_element = $manifest_xml->Slices->children();
         $slices = count($slices_xml_element);
+        $original_name = pathinfo($manifest_xml->Gcode->name,PATHINFO_FILENAME);
 
         $slicing_config_xml = simplexml_load_file("cws/".$cws_id."/Taz3D.slicing");
         $blank_time = $slicing_config_xml->BlankTime;
@@ -63,7 +64,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         $print->addChild('cws_id',$cws_id);        
         $print->addChild('filename', basename("cws/".$filename,".".$file_extension));
         $print->addChild('slices', $slices);
-        $print->addChild('original_name',basename("cws/".$_FILES['cws_file']['name'],".".$file_extension));
+        $print->addChild('original_name',$original_name);
         $print->addChild('print_time', $print_time);
         $print->addChild('last_printed', time());
         $print->addChild('uploaded', time());

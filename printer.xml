@@ -1,6 +1,6 @@
 <printer>
         <print_no>1</print_no>
-        <cws_id>2</cws_id>
+        <cws_id>1</cws_id>
         <filename>Pendant 1</filename>
         <original_filename>Pendant 1</original_filename>
         <state>1</state>
@@ -11,4 +11,5 @@
         <elapsed_time>0</elapsed_time>
         <message>Ready to print.</message>
         <current_z>0</current_z>
+        <current_slice>Pendant 10031.png</current_slice>
 </printer>

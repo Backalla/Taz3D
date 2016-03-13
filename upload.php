@@ -52,12 +52,7 @@ $(document).ready(function()
 
 
 <div id="here"></div>
-<div class="">
-    <div class="page-title">
-        <div class="title_left">
-            <h3>File Manager</h3>
-        </div>
-    </div>
+<div class="row">
     <div class="clearfix"></div>
 
     <div class="row">
@@ -65,7 +60,7 @@ $(document).ready(function()
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel" style="height:600px;">
                 <div class="x_title">
-                    <h2>Upload new CWS file</h2>
+                    <h3>Upload new CWS file</h3>
                     <div class="clearfix"></div>
                 </div>
                 <form action="handle_upload.php" method="post" enctype="multipart/form-data" id="upload">

@@ -40,7 +40,7 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Recent prints </h2>
+                <h3>Recent prints </h3>
                 
                 <div class="clearfix"></div>
             </div>
