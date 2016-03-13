@@ -4,6 +4,7 @@ import sys
 import xml.etree.ElementTree as ET
 import Tkinter
 import Image, ImageTk
+import re
 
 
 def display_slice(image_path, layer_time):
@@ -36,10 +37,13 @@ def get_printer_info(field):
   return printer_field
 
 def read_ser():
+  t=0
   while True:
     time.sleep(0.1)
+    t=t+0.1
     r = dlp_serial.read(dlp_serial.inWaiting())
     if len(r.strip()) > 0:
+      increment_elapsed_time(t)
       return r
 def send_gcode(gcode):
   gcode = gcode.strip()
@@ -64,16 +68,21 @@ def increment_elapsed_time(seconds):
 
 
 def get_z():
-  print send_gcode('M114')
+  m114_response = send_gcode('M114')
+  if 'Z' in m114_response:
+    z_exctract = re.findall("Z:([+-]?\d+\.\d+)",m114_response)
+    z_height = float(z_exctract[0])
+    return z_height
 
 
 def reset_printer():
   set_printer_info('state','1')
-  set_printer_info('message','Ready to print')
+  set_printer_info('message','Ready to print.')
   set_printer_info('completed_slices',0)
   set_printer_info('elapsed_time',0)
-  set_printer_info('message','Ready to print.')
   set_printer_info('print_started',0)
+  set_printer_info('current_z',0)
+  set_printer_info('total_time',0)
 # initialise all the files
 
 # Also set the state to 1 at startup to deal with accidental shutdowns
@@ -93,14 +102,14 @@ except:
 
 def main():
   try:
-    get_z()
+    print get_z()
     while True:
       time.sleep(0.5)
       # scan printer.xml for state of printer
       printer_state = get_printer_info('state')
       if printer_state=='2':
         set_printer_info('print_started',int(time.time()))
-        filename = get_printer_info('filename')
+        filename = get_printer_info('original_filename')
         cws_id = get_printer_info('cws_id')
         print filename,cws_id,printer_state
         gcode_file = open('cws/'+cws_id+'/'+filename+'.gcode','r')
@@ -127,11 +136,29 @@ def main():
         for gcode in header:
           if len(gcode) > 0:
             print gcode
-            send_gcode(gcode.strip())
+            send_gcode(gcode)
         increment_elapsed_time(10)
+        set_printer_info('current_z',get_z())
+        # Header ends here
+
+        # Slices start
         all_slices = gcode_root.findall('slice')
         for cur_slice in all_slices:
-          get_z()
+          # Check if printer is in paused state
+          printer_state = get_printer_info('state')
+          if printer_state == "3":
+            z=get_printer_info('current_z')
+            send_gcode("G1 Z"+str(abs(float(z)))+" F500")
+            while get_printer_info('state') == "3":
+              # Wait here until resumed
+              time.sleep(0.1)
+              pass
+            if get_printer_info('state') == "2":
+              send_gcode("G1 Z"+str(z)+" F200")
+            elif get_printer_info('state') == '1':
+              reset_printer()
+              break
+
           cur_slice_no = int(cur_slice.get('no'))
           layer_time = int(cur_slice.find('layer_time').text)
           lift_gcode = cur_slice.find('lift_gcode').text
@@ -139,19 +166,21 @@ def main():
           cur_slice_name = all_slice_names[cur_slice_no].find('name').text
           print cur_slice_no, cur_slice_name
           set_printer_info('completed_slices',cur_slice_no+1)
-          # time.sleep(1)
           # Display the image here
 
 
           # display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
 
 
+          # Lift sequence start
           lift_gcode=lift_gcode.split('\n')
           for gcode in lift_gcode:
             if len(gcode)>0:
               print gcode
-              send_gcode(gcode.strip())
+              send_gcode(gcode)
           increment_elapsed_time((float(layer_time)/1000)+(float(blanktime)/1000))
+          set_printer_info('current_z',get_z())          
+          # Slices end
       reset_printer()
   except KeyboardInterrupt:
     log("Printing stopped..")

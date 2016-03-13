@@ -22,13 +22,13 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
             });
 	}
 
-    function print_file(file,cws_id)
+    function print_file(cws_id)
     {
-        alert("printing : "+file);
+        alert("printing : "+cws_id);
         $.post("allthefunctions.php",
             {
                 'funct': "print",
-                'param': {'file':file,'cws_id':cws_id}
+                'param': cws_id
             },
             function(data, status){
                 load_page("main.php");
@@ -72,8 +72,8 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                             <td class=" "><?php echo $prints->slices; ?></td>
                             <td class=" "><?php echo $prints->print_time ?></td>
                             <td class="a-right a-right ">
-                            	<button type="button" class="btn btn-success btn-sm" onclick="print_file('<?php echo $prints->filename;  ?>','<?php echo $prints->cws_id;  ?>')"><i class="fa fa-bolt"></i> Print </button>
-                            	<button type="button" class="btn btn-danger btn-sm" onclick="delete_file('<?php echo $prints->filename;  ?>')"><i class="fa fa-trash"></i> Delete </button>
+                            	<button type="button" class="btn btn-success btn-sm" onclick="print_file('<?php echo $prints->cws_id;  ?>')"><i class="fa fa-bolt"></i> Print </button>
+                            	<button type="button" class="btn btn-danger btn-sm" onclick="delete_file('<?php echo $prints->cws_id;  ?>')"><i class="fa fa-trash"></i> Delete </button>
                                 <!-- Modal for file info start -->
                                 <div class="modal fade <?php echo $prints->cws_id?>_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-sm">

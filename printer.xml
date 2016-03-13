@@ -1,16 +1,14 @@
 <printer>
         <print_no>1</print_no>
-        <cws_id>1</cws_id>
+        <cws_id>2</cws_id>
         <filename>Pendant 1</filename>
+        <original_filename>Pendant 1</original_filename>
         <state>1</state>
         <total_slices>148</total_slices>
         <completed_slices>0</completed_slices>
         <print_started>0</print_started>
-        <total_time>1768</total_time>
+        <total_time>0</total_time>
         <elapsed_time>0</elapsed_time>
         <message>Ready to print.</message>
-        <pause>0</pause>
-        <resume>0</resume>
-        <stop>0</stop>
         <current_z>0</current_z>
 </printer>
