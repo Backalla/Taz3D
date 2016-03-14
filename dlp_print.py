@@ -183,7 +183,6 @@ def main():
           increment_elapsed_time((float(layer_time)/1000)+(float(blanktime)/1000))
           set_printer_info('current_z',get_z())          
           # Slices end
-      reset_printer()
   except KeyboardInterrupt:
     log("Printing stopped..")
     print "Byee"

@@ -11,5 +11,5 @@
         <elapsed_time>0</elapsed_time>
         <message>Ready to print.</message>
         <current_z>0</current_z>
-        <current_slice>Pendant 10031.png</current_slice>
+        <current_slice />
 </printer>

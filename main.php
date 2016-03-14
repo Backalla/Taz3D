@@ -1,6 +1,7 @@
 <script>
 clearInterval(interval);
 var dlp_status_data;
+var prev_dlp_status_data={};
 // $(document).ready(function(){
 //     $("#dashboard_content").html($("#printing_state").html());
 // });
@@ -47,7 +48,7 @@ function update_dashboard()
             }
         });
 }
-var interval=setInterval(update_dashboard,1000);
+var interval=setInterval(update_dashboard,100);
 
 
 
@@ -103,8 +104,10 @@ function stop()
             <h2><strong id="dashboard_percent_complete">60%</strong></h2>
             <div class="progress progress-striped">
                 <div id ="dashboard_progressbar" class="progress-bar progress-bar-info" role="progressbar"  style="width: 0%">
+                    <span class="sr-only">60% Complete</span>
                 </div>
             </div>
+            
         </div>
     </div>
     <br>

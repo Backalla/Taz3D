@@ -43,7 +43,9 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         $manifest_xml = simplexml_load_file("cws/".$cws_id."/manifest.xml");
         $slices_xml_element = $manifest_xml->Slices->children();
         $slices = count($slices_xml_element);
-        $original_name = pathinfo($manifest_xml->Gcode->name,PATHINFO_FILENAME);
+        $original_name = pathinfo($manifest_xml->GCode->name,PATHINFO_FILENAME);
+        echo "<script>alert('name:".$original_name."')</script>";
+
 
         $slicing_config_xml = simplexml_load_file("cws/".$cws_id."/Taz3D.slicing");
         $blank_time = $slicing_config_xml->BlankTime;
