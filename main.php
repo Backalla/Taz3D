@@ -7,7 +7,6 @@ var prev_dlp_status_data={};
 // });
 
 
-
 function update_dashboard()
 {
     $.ajax({ 
@@ -48,7 +47,7 @@ function update_dashboard()
             }
         });
 }
-var interval=setInterval(update_dashboard,100);
+var interval=setInterval(update_dashboard,1000);
 
 
 

@@ -49,6 +49,7 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 				$total_time = $print->print_time;
 				$filename = $print->filename;
 				$original_filename = $print->original_name;
+				$slice_height = $print->slice_height;
 			}
 		}
 		// echo "<script>alert('printing from allthefunstions2')</script>";
@@ -62,6 +63,7 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 			$printer_xml->message="Printing ".$filename.".cws";
 			$printer_xml->total_time = $total_time;
 			$printer_xml->total_slices = $total_slices;
+			$printer_xml->slice_height = $slice_height;
 		}
 		echo $printer_xml;
 		$printer_xml->asXML('printer.xml');

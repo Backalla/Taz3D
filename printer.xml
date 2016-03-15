@@ -1,5 +1,5 @@
 <printer>
-        <print_no>1</print_no>
+        <print_no>0</print_no>
         <cws_id>1</cws_id>
         <filename>Pendant 1</filename>
         <original_filename>Pendant 1</original_filename>
@@ -11,5 +11,6 @@
         <elapsed_time>0</elapsed_time>
         <message>Ready to print.</message>
         <current_z>0</current_z>
+        <slice_height>50</slice_height>
         <current_slice />
 </printer>

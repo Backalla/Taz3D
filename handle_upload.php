@@ -28,7 +28,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
     $printer_xml->asXML("printer.xml");
     while(check_file_exists(basename("cws/".$filename,".".$file_extension)))
     {
-      $filename = basename($_FILES['cws_file']['name'],".".$file_extension).$file_number.".".$file_extension;
+      $filename = basename($_FILES['cws_file']['name'],".".$file_extension)."_".$file_number.".".$file_extension;
       $file_number = $file_number+1;
     }
     if(move_uploaded_file($_FILES['cws_file']['tmp_name'], $upload_dir.$cws_id.".cws"))
@@ -40,6 +40,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         // system("mv $file_upload_path cws/".$filename);
         exec("mv blank.png cws/".$cws_id);
         exec("sudo 7z e cws/".$cws_id.".cws -ocws/".$cws_id."/");
+        exec("sudo chmod -R 777 /var/www/html/cws/*");
         $manifest_xml = simplexml_load_file("cws/".$cws_id."/manifest.xml");
         $slices_xml_element = $manifest_xml->Slices->children();
         $slices = count($slices_xml_element);
@@ -54,7 +55,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         {
           if((string)$resin->Name == $selected_resin)
           {
-            $slice_height = (int)((float)$resin->SliceHeight * 1000);
+            $slice_height = (int)round(((float)$resin->SliceHeight * 1000));
             $layer_exposure = $resin->LayerTime;
             $bottom_exposure = $resin->FirstLayerTime;
             $number_bottom_layers = $resin->NumberofBottomLayers;

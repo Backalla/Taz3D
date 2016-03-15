@@ -6,6 +6,7 @@ import Tkinter
 import Image, ImageTk
 import re
 
+Z_HEIGHT = -115
 
 def display_slice(image_path, layer_time):
   root = Tkinter.Tk()
@@ -36,22 +37,12 @@ def get_printer_info(field):
   printer_field = printer_root.find(field).text
   return printer_field
 
-def read_ser():
-  t=0
-  while True:
-    time.sleep(0.1)
-    t=t+0.1
-    r = dlp_serial.read(dlp_serial.inWaiting())
-    if len(r.strip()) > 0:
-      increment_elapsed_time(t)
-      return r
 def send_gcode(gcode):
   gcode = gcode.strip()
-
-  # Send M400 to wait for current move to finish
-
-  dlp_serial.write(gcode+'\nM400\n')
-  response=read_ser()
+  dlp_serial.write(gcode+'\n')
+  response=dlp_serial.readline()
+  dlp_serial.write("M400\n")
+  m400_response = dlp_serial.readline()
   return response
 
 
@@ -66,24 +57,22 @@ def log(s):
 def increment_elapsed_time(seconds):
   set_printer_info('elapsed_time',float(get_printer_info('elapsed_time'))+float(seconds))
 
-
-def get_z():
-  m114_response = send_gcode('M114')
-  if 'Z' in m114_response:
-    z_exctract = re.findall("Z:([+-]?\d+\.\d+)",m114_response)
-    z_height = float(z_exctract[0])
-    return z_height
-
+def increment_current_z(slice_height):  #increment current_z by slice height at every layer
+  set_printer_info('current_z',float(get_printer_info('current_z'))+(float(slice_height)/1000))
 
 def reset_printer():
-  set_printer_info('state','1')
+  set_printer_info('state',1)
+  set_printer_info('cws_id',0)
   set_printer_info('message','Ready to print.')
   set_printer_info('completed_slices',0)
   set_printer_info('elapsed_time',0)
   set_printer_info('print_started',0)
   set_printer_info('current_z',0)
   set_printer_info('total_time',0)
+  set_printer_info('total_slices',0)
   set_printer_info('current_slice','')
+  set_printer_info('filename','')
+  set_printer_info('original_filename','')
 # initialise all the files
 
 # Also set the state to 1 at startup to deal with accidental shutdowns
@@ -103,12 +92,14 @@ except:
 
 def main():
   try:
-    print get_z()
+    slice_height = get_printer_info("slice_height")
+    print slice_height
     while True:
       time.sleep(0.5)
       # scan printer.xml for state of printer
       printer_state = get_printer_info('state')
       if printer_state=='2':
+        set_printer_info('print_started',time.time())
         set_printer_info('print_started',int(time.time()))
         filename = get_printer_info('original_filename')
         cws_id = get_printer_info('cws_id')
@@ -139,7 +130,7 @@ def main():
             print gcode
             send_gcode(gcode)
         increment_elapsed_time(10)
-        set_printer_info('current_z',get_z())
+        set_printer_info('current_z',Z_HEIGHT)
         # Header ends here
 
         # Slices start
@@ -165,7 +156,7 @@ def main():
           lift_gcode = cur_slice.find('lift_gcode').text
           blanktime = int(cur_slice.find('blanktime').text)
           cur_slice_name = all_slice_names[cur_slice_no].find('name').text
-          print cur_slice_no, cur_slice_name
+          print cur_slice_no, cur_slice_name,get_printer_info("current_z")
           set_printer_info('current_slice',cur_slice_name)
           set_printer_info('completed_slices',cur_slice_no+1)
           # Display the image here
@@ -181,7 +172,7 @@ def main():
               print gcode
               send_gcode(gcode)
           increment_elapsed_time((float(layer_time)/1000)+(float(blanktime)/1000))
-          set_printer_info('current_z',get_z())          
+          increment_current_z(get_printer_info('slice_height'))          
           # Slices end
   except KeyboardInterrupt:
     log("Printing stopped..")
