@@ -35,6 +35,7 @@ function update_dashboard()
                     if(state == "2")
                     {
                         $("#btn_pause_resume").html("Pause");
+                        $("#pause_resume_modal_message").html("Are you sure you want to pause the print?");
                         $("#current_slice_image").attr("src","cws/"+dlp_status_data['cws_id']+"/"+ dlp_status_data['current_slice']);
                         console.log("cws/"+dlp_status_data['cws_id']+"/"+ dlp_status_data['current_slice']);
                         $("#btn_stop").addClass("disabled");
@@ -42,6 +43,8 @@ function update_dashboard()
                     if(state == "3")
                     {
                         $("#btn_pause_resume").html("Resume");
+                        $("#pause_resume_modal_message").html("Are you sure you want to resume the print?");
+
                     }
                 }
             }
@@ -140,8 +143,8 @@ function stop()
                     <div class="x_content">
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <h2>Controls</h2>
-                            <button type="button" class="btn btn-primary" id="btn_pause_resume" onclick="pause_resume()">Pause/Resume</button>
-                            <button type="button" class="btn btn-danger" id="btn_stop" onclick="stop()">Stop</button>
+                            <button type="button" class="btn btn-primary" id="btn_pause_resume" data-toggle="modal" data-target=".confirm_pause_modal">Pause/Resume</button>
+                            <button type="button" class="btn btn-danger" id="btn_stop" data-toggle="modal" data-target=".confirm_stop_modal">Stop</button>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-6">
                             <h2>Slice view</h2>
@@ -159,4 +162,48 @@ function stop()
 
 <!-- Printing state end -->
 
+<!-- Modal for print pause start -->
+<div class="modal fade confirm_pause_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
 
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2">Confirm pause</h4>
+            </div>
+            <div class="modal-body">
+                <h4 id="pause_resume_modal_message"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >No</button>
+                <button type="button" class="btn btn-primary" onclick="pause_resume()">Yes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal for print pause end -->
+
+<!-- Modal for print stop start -->
+<div class="modal fade confirm_stop_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel2">Confirm stop</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure you want to stop the print?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" >No</button>
+                <button type="button" class="btn btn-primary" onclick="stop()">Yes</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal for print stop end -->
