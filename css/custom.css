@@ -1,3 +1,8 @@
+body.modal-open {
+  overflow: inherit;
+  padding-right: 0 !important;
+}
+
 body.nav-sm .container.body .left_col {
     width: 70px;
     padding: 0;

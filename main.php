@@ -35,6 +35,7 @@ function update_dashboard()
                     if(state == "2")
                     {
                         $("#btn_pause_resume").html("Pause");
+                        $("#pause_resume_modal_heading").html("Confirm Pause");
                         $("#pause_resume_modal_message").html("Are you sure you want to pause the print?");
                         $("#current_slice_image").attr("src","cws/"+dlp_status_data['cws_id']+"/"+ dlp_status_data['current_slice']);
                         console.log("cws/"+dlp_status_data['cws_id']+"/"+ dlp_status_data['current_slice']);
@@ -43,6 +44,7 @@ function update_dashboard()
                     if(state == "3")
                     {
                         $("#btn_pause_resume").html("Resume");
+                        $("#pause_resume_modal_heading").html("Confirm Resume");
                         $("#pause_resume_modal_message").html("Are you sure you want to resume the print?");
 
                     }
@@ -72,6 +74,9 @@ function stop()
         {
             'funct': "stop",
             'param': dlp_status_data['state']
+        },
+        function(data, status){
+            load_page("main.php");
         });
 }
 </script>
@@ -161,7 +166,6 @@ function stop()
 </div> 
 
 <!-- Printing state end -->
-
 <!-- Modal for print pause start -->
 <div class="modal fade confirm_pause_modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
@@ -170,7 +174,7 @@ function stop()
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="myModalLabel2">Confirm pause</h4>
+                <h4 class="modal-title" id="pause_resume_modal_heading"></h4>
             </div>
             <div class="modal-body">
                 <h4 id="pause_resume_modal_message"></h4>
@@ -207,3 +211,4 @@ function stop()
     </div>
 </div>
 <!-- Modal for print stop end -->
+

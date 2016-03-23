@@ -64,6 +64,7 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 			$printer_xml->total_time = $total_time;
 			$printer_xml->total_slices = $total_slices;
 			$printer_xml->slice_height = $slice_height;
+			exec("sudo chmod -R 777 /var/www/html/cws/*");
 		}
 		echo $printer_xml;
 		$printer_xml->asXML('printer.xml');

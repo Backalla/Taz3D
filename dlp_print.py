@@ -5,21 +5,12 @@ import xml.etree.ElementTree as ET
 import Tkinter
 import Image, ImageTk
 import re
-
+from os import system
 Z_HEIGHT = -115
 
 def display_slice(image_path, layer_time):
-  root = Tkinter.Tk()
-  root.geometry('+%d+%d' % (100,100))
-  slice_image = Image.open(image_path)
-  w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-  root.overrideredirect(1) 
-  root.geometry("%dx%d+0+0" % (slice_image.size[0], slice_image.size[1]))
-  tk_slice_image = ImageTk.PhotoImage(slice_image)
-  label_image = Tkinter.Label(root, image=tk_slice_image)
-  label_image.place(x=0,y=0,width=slice_image.size[0],height=slice_image.size[1])
-  root.after(layer_time, lambda: root.destroy())
-  root.mainloop()
+  system("(sleep %d; kill $(pgrep fbi) ) &" %(layer_time/1000))
+  system("fbi -noverbose '%s'" %(image_path))
 
 def set_printer_info(field,value):
   printer_xml = ET.parse('printer.xml')
@@ -138,6 +129,24 @@ def main():
         for cur_slice in all_slices:
           # Check if printer is in paused state
           printer_state = get_printer_info('state')
+          
+
+          cur_slice_no = int(cur_slice.get('no'))
+          layer_time = int(cur_slice.find('layer_time').text)
+          lift_gcode = cur_slice.find('lift_gcode').text
+          blanktime = int(cur_slice.find('blanktime').text)
+          cur_slice_name = all_slice_names[cur_slice_no].find('name').text
+          print cur_slice_no, cur_slice_name,get_printer_info("current_z")
+          set_printer_info('current_slice',cur_slice_name)
+          set_printer_info('completed_slices',cur_slice_no+1)
+          # Display the image here
+          print time.time()
+
+
+          display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
+          print time.time()
+
+          # Check if paused
           if printer_state == "3":
             z=get_printer_info('current_z')
             send_gcode("G1 Z"+str(abs(float(z)))+" F500")
@@ -150,19 +159,6 @@ def main():
             elif get_printer_info('state') == '1':
               reset_printer()
               break
-
-          cur_slice_no = int(cur_slice.get('no'))
-          layer_time = int(cur_slice.find('layer_time').text)
-          lift_gcode = cur_slice.find('lift_gcode').text
-          blanktime = int(cur_slice.find('blanktime').text)
-          cur_slice_name = all_slice_names[cur_slice_no].find('name').text
-          print cur_slice_no, cur_slice_name,get_printer_info("current_z")
-          set_printer_info('current_slice',cur_slice_name)
-          set_printer_info('completed_slices',cur_slice_no+1)
-          # Display the image here
-
-
-          # display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
 
 
           # Lift sequence start
@@ -185,4 +181,5 @@ def main():
 if __name__ == '__main__':
   reset_printer()
   main()
+  k=raw_input()
 

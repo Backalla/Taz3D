@@ -114,7 +114,7 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                                                 </button>
-                                                <h4 class="modal-title" id="myModalLabel2">Confirm delete</h4>
+                                                <h4 class="modal-title" id="myModalLabel2">Confirm print</h4>
                                             </div>
                                             <div class="modal-body">
                                                 <h4>Are you sure you want to print <?php echo $prints->filename ?>?</h4>
@@ -130,7 +130,7 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                                 <!-- Modal for print confirmation end -->
 
 
-                                <!-- Modal for cws delete start -->
+                                <!-- Modal for cws delete start here-->
                                 <div class="modal fade confirm_delete_<?php echo $prints->cws_id?>_modal" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-sm">
                                         <div class="modal-content">
@@ -138,7 +138,7 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                                             <div class="modal-header">
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
                                                 </button>
-                                                <h4 class="modal-title" id="myModalLabel2">Confirm print</h4>
+                                                <h4 class="modal-title" id="myModalLabel2">Confirm delete</h4>
                                             </div>
                                             <div class="modal-body">
                                                 <h4>Are you sure you want to delete <?php echo $prints->filename ?>?</h4>
