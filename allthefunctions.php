@@ -28,8 +28,8 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 		}
 
 		$doc->save("cws_files.xml");
-	    exec("sudo rm -rf cws/".$cws_id."/");
-	    exec("sudo rm cws/".$cws_id.".cws");
+	    exec("sudo rm -rf cws/".$delete_cws_id."/");
+	    exec("sudo rm cws/".$delete_cws_id.".cws");
 	}
 	if($_POST['funct'] == 'print')
 	{

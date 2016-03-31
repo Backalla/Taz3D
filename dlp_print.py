@@ -124,17 +124,20 @@ def main():
         header=gcode_root.find('header').text
         header = header.split('\n')
         # send gcodes in header one by one
+        header_time_start = time.time()
         for gcode in header:
           if len(gcode) > 0:
             print gcode
             send_gcode(gcode)
-        increment_elapsed_time(10)
+        header_time_end = time.time()
+        increment_elapsed_time(header_time_end- header_time_start)
         set_printer_info('current_z',Z_HEIGHT)
         # Header ends here
         shutter_close()
         # Slices start
         all_slices = gcode_root.findall('slice')
         for cur_slice in all_slices:
+          display_time_start = time.time()
           # Check if printer is in paused state
           printer_state = get_printer_info('state')
           
@@ -149,10 +152,11 @@ def main():
           set_printer_info('completed_slices',cur_slice_no+1)
           # Display the image here
           shutter_open()
-          print time.time()
+          # print time.time()
           display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
-          print time.time()
+          # print time.time()
           shutter_close()
+          display_time_end=time.time()
           # Check if paused
           if printer_state == "3":
             z=get_printer_info('current_z')
@@ -169,12 +173,14 @@ def main():
 
 
           # Lift sequence start
+          lift_time_start = time.time()
           lift_gcode=lift_gcode.split('\n')
           for gcode in lift_gcode:
             if len(gcode)>0:
               print gcode
               send_gcode(gcode)
-          increment_elapsed_time((float(layer_time)/1000)+(float(blanktime)/1000))
+          lift_time_end = time.time()
+          increment_elapsed_time((display_time_end- display_time_start )+(lift_time_end - lift_time_start ))
           increment_current_z(get_printer_info('slice_height')) 
 
 
@@ -187,6 +193,7 @@ def main():
             send_gcode(gcode)
         increment_elapsed_time(10)
         set_printer_info('current_z',0)
+        reset_printer()
         # Footer ends          
           # Slices end
   except KeyboardInterrupt:

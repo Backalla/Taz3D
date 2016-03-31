@@ -68,7 +68,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         $print->addChild('filename', basename("cws/".$filename,".".$file_extension));
         $print->addChild('slices', $slices);
         $print->addChild('original_name',$original_name);
-        $print->addChild('print_time', $print_time);
+        $print->addChild('print_time', gmdate("H:i:s", $print_time));
         $print->addChild('last_printed', time());
         $print->addChild('uploaded', time());
         $print->addChild('blank_time',$blank_time);

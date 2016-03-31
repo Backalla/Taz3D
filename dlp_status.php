@@ -8,7 +8,7 @@ header('Content-Type: application/json');
 // 	$printer_xml->asXML('printer.xml');
 // }
 $printer_xml = simplexml_load_file("printer.xml");
-$printer_xml->total_time = gmdate("H:i:s", (int)$printer_xml->total_time);
+// $printer_xml->total_time = gmdate("H:i:s", (int)$printer_xml->total_time);
 $printer_xml->elapsed_time = gmdate("H:i:s", (int)$printer_xml->elapsed_time);
 $json = json_encode($printer_xml);
 

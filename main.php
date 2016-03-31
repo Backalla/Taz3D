@@ -126,11 +126,11 @@ function stop()
                 <div class="clearfix"></div>
             </div>
             <div class="x_content" style="font-size:20px">
-                Filename : <strong id="dashboard_filename">Somethn.cws</strong><br>
-                Total time : <strong id="dashboard_total_time">02:15:00</strong><br>
-                Elapsed time : <strong id="dashboard_elapsed_time">01:10:12</strong><br>
-                Total slices : <strong id="dashboard_total_slices">542</strong><br>
-                Completed slices : <strong id="dashboard_completed_slices">214</strong><br>
+                Filename : <strong id="dashboard_filename"></strong><br>
+                Total time : <strong id="dashboard_total_time"></strong><br>
+                Elapsed time : <strong id="dashboard_elapsed_time"></strong><br>
+                Total slices : <strong id="dashboard_total_slices"></strong><br>
+                Completed slices : <strong id="dashboard_completed_slices"></strong><br>
             </div>
         </div>
     </div>
