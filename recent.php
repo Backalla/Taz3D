@@ -95,6 +95,11 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                                                 <div class="row"><strong>Bottom exposure time : </strong><?php echo $prints->bottom_exposure." ms" ?></div>
                                                 <div class="row"><strong>Number of bottom layers : </strong><?php echo $prints->number_bottom_layers ?></div>
 
+                                                <div class="row">
+                                                    <div class="image_zoom">
+                                                        <img  class="col-md-12 col-sm-12 col-xs-12" src="cws/<?php echo $prints->cws_id?>/ScenePreview.png"/>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
