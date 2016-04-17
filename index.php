@@ -28,7 +28,7 @@ require_once('allthefunctions.php');
     <link rel="stylesheet" type="text/css" href="css/maps/jquery-jvectormap-2.0.1.css" />
 
     <!-- Tablesorter style -->
-    <link rel="stylesheet" href="tablesorter/css/theme.default.css" />
+    <!-- <link rel="stylesheet" href="tablesorter/css/theme.default.css" /> -->
     <link href="css/icheck/flat/green.css" rel="stylesheet" />
 
     <link href="css/floatexamples.css" rel="stylesheet" type="text/css" />
