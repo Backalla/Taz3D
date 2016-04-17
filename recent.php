@@ -5,7 +5,15 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
 
 ?>
 <script>
-
+var n;
+$('table').tablesorter({
+   sortList: [[0, 0]],
+   headers: {5: {sorter: false}},
+   textExtraction : function(node, table, cellIndex){
+           n = $(node);
+           return n.attr('data-sortkey') || n.text();
+       }
+});
 	function delete_file(file)
 	{
 		// alert(file);
@@ -45,14 +53,16 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <table id="example" class="table table-striped responsive-utilities jambo_table">
+                <!-- <table id="example" class="table table-striped responsive-utilities jambo_table"> -->
+                <table id="example" class="tablesorter table jambo_table">
+
                     <thead>
                         <tr class="headings">
-                            <th>Name </th>
-                            <th>Uploaded on </th>
-                            <th>Last printed on </th>
-                            <th>Total slices </th>
-                            <th>Expected print time </th>
+                            <th><a href="#" onclick="return false;" style="color: #ffffff">Name <i class="fa fa-sort navbar-right" aria-hidden="true"></i></a></th>
+                            <th><a href="#" onclick="return false;" style="color: #ffffff">Uploaded on <i class="fa fa-sort navbar-right" aria-hidden="true"></i></a></th>
+                            <th><a href="#" onclick="return false;" style="color: #ffffff">Last printed on <i class="fa fa-sort navbar-right" aria-hidden="true"></i></a></th>
+                            <th><a href="#" onclick="return false;" style="color: #ffffff">Total slices <i class="fa fa-sort navbar-right" aria-hidden="true"></i></a></th>
+                            <th><a href="#" onclick="return false;" style="color: #ffffff">Expected print time <i class="fa fa-sort navbar-right" aria-hidden="true"></i></a></th>
                             <th class=" no-link last"><span class="nobr">Action</span>
                             </th>
                         </tr>
@@ -67,8 +77,8 @@ $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try u
                         <tr class="odd pointer">
                             
                             <td class=" " data-toggle="modal" data-target=".<?php echo $prints->cws_id?>_modal"><a href="#" onclick="return false;"><strong><?php echo $prints->filename; ?></strong></a></td>
-                            <td class=" "><?php echo date("F j, Y, g:i a",intval($prints->uploaded)); ?></td>
-                            <td class=" "><?php echo date("F j, Y, g:i a",intval($prints->last_printed)); ?></td>
+                            <td class=" " data-sortkey="<?php echo intval($prints->uploaded); ?>"><?php echo date("F j, Y, g:i a",intval($prints->uploaded)); ?></td>
+                            <td class=" " data-sortkey="<?php echo intval($prints->last_printed); ?>"><?php echo date("F j, Y, g:i a",intval($prints->last_printed)); ?></td>
                             <td class=" "><?php echo $prints->slices; ?></td>
                             <td class=" "><?php echo $prints->print_time ?></td>
                             <td class="a-right a-right ">
