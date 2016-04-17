@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL);
+date_default_timezone_set('Asia/Mumbai');
 ini_set('display_errors', "1");
 require_once('allthefunctions.php');
 

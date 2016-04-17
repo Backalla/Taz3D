@@ -6,7 +6,7 @@
 		<slices>164</slices>
 		<original_name>bottlecap</original_name>
 		<print_time>00:37:10</print_time>
-		<last_printed>0</last_printed>
+		<last_printed>1457349039</last_printed>
 		<uploaded>1457334640</uploaded>
 		<blank_time>10800</blank_time>
 		<selected_resin>Experimental</selected_resin>
@@ -21,7 +21,7 @@
 		<slices>1095</slices>
 		<original_name>taz_hand_huge</original_name>
 		<print_time>04:06:39</print_time>
-		<last_printed>15115132</last_printed>
+		<last_printed>0</last_printed>
 		<uploaded>1457338216</uploaded>
 		<blank_time>10800</blank_time>
 		<selected_resin>Experimental</selected_resin>
@@ -36,8 +36,38 @@
 		<slices>1580</slices>
 		<original_name>taz_saraswaty_huge</original_name>
 		<print_time>05:55:46</print_time>
-		<last_printed>115131243</last_printed>
+		<last_printed>1457349106</last_printed>
 		<uploaded>1457341202</uploaded>
+		<blank_time>10800</blank_time>
+		<selected_resin>Experimental</selected_resin>
+		<slice_height>30</slice_height>
+		<layer_exposure>2700</layer_exposure>
+		<bottom_exposure>5000</bottom_exposure>
+		<number_bottom_layers>3</number_bottom_layers>
+	</print>
+	<print>
+		<cws_id>4</cws_id>
+		<filename>two rings iso</filename>
+		<slices>287</slices>
+		<original_name>two rings iso</original_name>
+		<print_time>01:04:51</print_time>
+		<last_printed>0</last_printed>
+		<uploaded>1457343700</uploaded>
+		<blank_time>10800</blank_time>
+		<selected_resin>Experimental</selected_resin>
+		<slice_height>100</slice_height>
+		<layer_exposure>2700</layer_exposure>
+		<bottom_exposure>5000</bottom_exposure>
+		<number_bottom_layers>3</number_bottom_layers>
+	</print>
+	<print>
+		<cws_id>5</cws_id>
+		<filename>taz_hand_huge_1</filename>
+		<slices>1095</slices>
+		<original_name>taz_hand_huge</original_name>
+		<print_time>04:06:39</print_time>
+		<last_printed>0</last_printed>
+		<uploaded>1457348122</uploaded>
 		<blank_time>10800</blank_time>
 		<selected_resin>Experimental</selected_resin>
 		<slice_height>30</slice_height>

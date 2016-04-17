@@ -2,7 +2,6 @@
 require_once("allthefunctions.php");
 $xml = simplexml_load_file("cws_files.xml") or die("Something went wrong!! Try updating the software..");
 
-
 ?>
 <script>
 var n;
@@ -78,7 +77,14 @@ $('table').tablesorter({
                             
                             <td class=" " data-toggle="modal" data-target=".<?php echo $prints->cws_id?>_modal"><a href="#" onclick="return false;"><strong><?php echo $prints->filename; ?></strong></a></td>
                             <td class=" " data-sortkey="<?php echo intval($prints->uploaded); ?>"><?php echo date("F j, Y, g:i a",intval($prints->uploaded)); ?></td>
-                            <td class=" " data-sortkey="<?php echo intval($prints->last_printed); ?>"><?php echo date("F j, Y, g:i a",intval($prints->last_printed)); ?></td>
+                            <td class=" " data-sortkey="<?php echo intval($prints->last_printed); ?>">
+                                <?php 
+                                if(intval($prints->last_printed) == 0)
+                                    echo "Never";
+                                else
+                                    echo date("F j, Y, g:i a",intval($prints->last_printed)); 
+                                ?>
+                            </td>
                             <td class=" "><?php echo $prints->slices; ?></td>
                             <td class=" "><?php echo $prints->print_time ?></td>
                             <td class="a-right a-right ">

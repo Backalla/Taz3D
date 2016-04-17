@@ -64,10 +64,19 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 			$printer_xml->total_time = $total_time;
 			$printer_xml->total_slices = $total_slices;
 			$printer_xml->slice_height = $slice_height;
+			foreach ($file_info_xml->children() as $print)
+			{
+				if($print->cws_id == (string)$print_cws_id)
+				{
+					$print->last_printed = time();
+					echo time();
+				}
+			}
 			exec("sudo chmod -R 777 /var/www/html/cws/*");
 		}
 		echo $printer_xml;
 		$printer_xml->asXML('printer.xml');
+		$file_info_xml->asXML('cws_files.xml');
 	}
 	if($_POST['funct'] == 'pause_resume')
 	{
