@@ -33,7 +33,10 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
     }
     if(move_uploaded_file($_FILES['cws_file']['tmp_name'], $upload_dir.$cws_id.".cws"))
     {
-        echo "<script>alert('File uploaded successfully');</script>";
+        echo 
+        "<script>alert('File uploaded successfully');
+        $('#processing').hide();
+        </script>";
         $uploaded =1;
         // echo "sudo chown pi:pi ".$file_upload_path;
         exec("mkdir cws/".$cws_id);
@@ -45,7 +48,7 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
         $slices_xml_element = $manifest_xml->Slices->children();
         $slices = count($slices_xml_element);
         $original_name = pathinfo($manifest_xml->GCode->name,PATHINFO_FILENAME);
-        echo "<script>alert('name:".$original_name."')</script>";
+        // echo "<script>alert('name:".$original_name."')</script>";
 
 
         $slicing_config_xml = simplexml_load_file("cws/".$cws_id."/Taz3D.slicing");
