@@ -1,0 +1,16 @@
+RewriteEngine on 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^?]*)$ /index.php [NC,L,QSA]
+ 
+<Files ~ "\.py$">  
+Order Allow,Deny
+Deny from All
+</Files>
+<Files ~ "\.xml$">  
+Order Allow,Deny
+Deny from All
+</Files>
+
+ 
+
