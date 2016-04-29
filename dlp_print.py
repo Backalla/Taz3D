@@ -127,7 +127,7 @@ def main():
         header_time_start = time.time()
         for gcode in header:
           if len(gcode) > 0:
-            print gcode
+            # print gcode
             send_gcode(gcode)
         header_time_end = time.time()
         increment_elapsed_time(header_time_end- header_time_start)
@@ -147,7 +147,7 @@ def main():
           lift_gcode = cur_slice.find('lift_gcode').text
           blanktime = int(cur_slice.find('blanktime').text)
           cur_slice_name = all_slice_names[cur_slice_no].find('name').text
-          print cur_slice_no, cur_slice_name,get_printer_info("current_z")
+          # print cur_slice_no, cur_slice_name,get_printer_info("current_z")
           set_printer_info('current_slice',cur_slice_name)
           set_printer_info('completed_slices',cur_slice_no+1)
           # Display the image here
@@ -156,6 +156,7 @@ def main():
           display_slice('cws/'+cws_id+'/'+cur_slice_name,layer_time)
           # print time.time()
           shutter_close()
+          system("clear")
           display_time_end=time.time()
           # Check if paused
           if printer_state == "3":
@@ -177,7 +178,7 @@ def main():
           lift_gcode=lift_gcode.split('\n')
           for gcode in lift_gcode:
             if len(gcode)>0:
-              print gcode
+              # print gcode
               send_gcode(gcode)
           lift_time_end = time.time()
           increment_elapsed_time((display_time_end- display_time_start )+(lift_time_end - lift_time_start ))
@@ -189,7 +190,7 @@ def main():
         # send gcodes in Footer one by one
         for gcode in footer:
           if len(gcode) > 0:
-            print gcode
+            # print gcode
             send_gcode(gcode)
         increment_elapsed_time(10)
         set_printer_info('current_z',0)

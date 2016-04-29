@@ -40,10 +40,10 @@ if(isset($_FILES) && !empty($_FILES) && $_FILES['cws_file']['size']>0)
       $uploaded =1;
       // echo "sudo chown pi:pi ".$file_upload_path;
       exec("mkdir cws/".$cws_id);
-      // system("mv $file_upload_path cws/".$filename);
-      exec("mv blank.png cws/".$cws_id);
-      exec("sudo 7z e cws/".$cws_id.".cws -ocws/".$cws_id."/");
       exec("sudo chmod -R 777 /var/www/html/cws/*");
+      
+      // system("mv $file_upload_path cws/".$filename);
+      exec("sudo 7z e cws/".$cws_id.".cws -ocws/".$cws_id."/");
       $manifest_xml = simplexml_load_file("cws/".$cws_id."/manifest.xml");
       $slices_xml_element = $manifest_xml->Slices->children();
       $slices = count($slices_xml_element);

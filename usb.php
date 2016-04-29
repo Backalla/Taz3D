@@ -15,7 +15,7 @@ function print_cws_file(cws_filename)
 {
   var file_path = "/"+current_path.join("/")+"/"+cws_filename;
   // alert(file_path);
-  $("#confirm_print_modal_dialogue").html("Are you sure you want to print "+cws_filename+"?");
+  $("#confirm_print_modal_dialogue").html("Are you sure you want to upload "+cws_filename+"?");
   $("#confirm_print_modal_yes").click(function(){
     $(".modal").modal("hide");
     $("#processing").show();
@@ -48,11 +48,18 @@ function get_files(path)
             {
               table_row="<tr>";
               if(type == "directory")
-                table_row += "<td onclick=\"get_subdir_files('"+name+"')\"><strong><a>"+name+"</a></strong></td><td></td>";
+              {
+                var glyphicon = ""
+                if(name == "..")
+                  glyphicon = "fa-reply"
+                else
+                  glyphicon = "fa-folder-open" 
+                table_row += "<td onclick=\"get_subdir_files('"+name+"')\"><i class='fa "+glyphicon+" ' aria-hidden='true'></i> &nbsp; &nbsp;<strong><a href='#' onclick='return false;'>"+name+"</a></strong></td><td></td>";
+              }
               if(type == "cws_file")
               {
-                print_button = '<button type="button" data-toggle="modal" data-target=".confirm_print_modal" class="btn btn-success btn-sm" onclick="print_cws_file(\''+name+'\')"><i class="fa fa-bolt"></i> Print </button>';
-                table_row += "<td><strong><a>"+name+"</a></strong></td>";
+                print_button = '<button type="button" data-toggle="modal" data-target=".confirm_print_modal" class="btn btn-success btn-sm" onclick="print_cws_file(\''+name+'\')"><i class="fa fa-upload"></i> Upload </button>';
+                table_row += "<td><i class='fa fa-arrow-right' aria-hidden='true'></i> &nbsp; &nbsp;<strong><i>"+name+"</i></strong></td>";
                 table_row += "<td>" + print_button  + "</td>";
 
               }
@@ -76,10 +83,9 @@ $(document).ready(function()
 
 $usb_port = shell_exec("ls /dev/sd*1");
 if($usb_port == "")
-  echo "Not connected";
+  echo "<h3>No USB device found.</h3>";
 else
-  echo "Connected USB at".$usb_port;
-echo "<br>";
+{
 
 ?>
 <div id="processing">
@@ -132,3 +138,6 @@ echo "<br>";
         </div>
     </div>
 </div>
+<?php
+}
+?>
