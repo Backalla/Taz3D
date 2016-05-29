@@ -79,7 +79,6 @@ require_once('allthefunctions.php');
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 
                         <div class="menu_section">
-                            <h3>General</h3>
                             <ul class="nav side-menu">
                                 <li onclick="load_page('main.php');return false;"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
                                 </li>
@@ -95,7 +94,13 @@ require_once('allthefunctions.php');
                                         </li>
                                     </ul>
                                 </li>
-                                <li onclick="load_page('settings.php');return false;"><a href="#"><i class="fa fa-cogs"></i> Settings </a>
+                                <li><a><i class="fa fa-cogs"></i>Settings<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li onclick="load_page('settings_network.php');return false;"><a href="#"><span class="fa fa-chain"></span> Network Settings</a>
+                                        </li>
+                                        <li onclick="load_page('settings_machine.php');return false;"><a href="#"><span class="fa fa-sliders"></span> Machine Settings</a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </div>

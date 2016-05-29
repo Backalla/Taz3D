@@ -31,6 +31,38 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 	    exec("sudo rm -rf cws/".$delete_cws_id."/");
 	    exec("sudo rm cws/".$delete_cws_id.".cws");
 	}
+	if($_POST['funct'] == 'get_ethernet_address')
+	{
+		$ethernet_address = `ifconfig eth0|grep -Po 't addr:\K[\d.]+'`;
+		echo json_encode(trim($ethernet_address));
+	}
+	if($_POST['funct'] == 'get_wifi_address')
+	{
+		$wifi_address = `ifconfig wlan0|grep -Po 't addr:\K[\d.]+'`;
+		echo json_encode(trim($wifi_address));
+	}
+	if($_POST['funct'] == 'get_wifi_list')
+	{
+		$wifi_list = `sudo iwlist wlan0 scan | grep -Po 'ESSID:"\K.*?(?=")'`;
+		echo json_encode(explode("\n",trim($wifi_list)));
+		// echo json_encode($wifi_list);
+	}
+	
+	if($_POST['funct'] == 'pause_resume')
+	{
+		// echo $_POST['param'];
+		$printer_xml = simplexml_load_file("printer.xml");
+		$state = $_POST['param'];
+		if($state == '2')
+		{
+			$printer_xml->state='3';
+		}
+		if($state == '3')
+		{
+			$printer_xml->state='2';
+		}
+		$printer_xml->asXML('printer.xml');
+	}
 	if($_POST['funct'] == 'print')
 	{
 		// echo "<script>alert('printing from allthefunstions')</script>";
@@ -78,21 +110,7 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 		$printer_xml->asXML('printer.xml');
 		$file_info_xml->asXML('cws_files.xml');
 	}
-	if($_POST['funct'] == 'pause_resume')
-	{
-		// echo $_POST['param'];
-		$printer_xml = simplexml_load_file("printer.xml");
-		$state = $_POST['param'];
-		if($state == '2')
-		{
-			$printer_xml->state='3';
-		}
-		if($state == '3')
-		{
-			$printer_xml->state='2';
-		}
-		$printer_xml->asXML('printer.xml');
-	}
+	
 	if($_POST['funct'] == 'stop')
 	{
 		// echo $_POST['param'];
@@ -102,87 +120,87 @@ if(isset($_POST['funct']) && !empty($_POST['funct']))
 	}
 	if($_POST['funct'] == 'usb_upload')
 	{
-    $uploaded=0;
-		$file_source = $_POST['param'];
-    function check_file_exists($filename)
-    {
-      $check_file_xml = simplexml_load_file("cws_files.xml");
-      foreach ($check_file_xml as $cws_file)
-      {
-        // echo $cws_file->filename;
-        if((string)$cws_file->filename == $filename)
-          return True;
-      }
-      return False;
-    }
-    $file_number = 1;    
-    $upload_dir = "/var/www/html/cws/";
-    $file_extension =  strtolower(pathinfo($file_source,PATHINFO_EXTENSION));
-    if($file_extension == "cws")
-    {
-      $filename = basename($file_source,".".$file_extension);
-      $printer_xml = simplexml_load_file("printer.xml");
-      $cws_id = ((int)$printer_xml->print_no)+1;
-      // Deal with this later
-      $printer_xml->print_no = $cws_id;
-      $printer_xml->asXML("printer.xml");
-      while(check_file_exists(basename($file_source,".".$file_extension)))
-      {
-        $filename = basename($file_source,".".$file_extension)."_".$file_number.".".$file_extension;
-        $file_number = $file_number+1;
-      }
+	    $uploaded=0;
+			$file_source = $_POST['param'];
+	    function check_file_exists($filename)
+	    {
+	      $check_file_xml = simplexml_load_file("cws_files.xml");
+	      foreach ($check_file_xml as $cws_file)
+	      {
+	        // echo $cws_file->filename;
+	        if((string)$cws_file->filename == $filename)
+	          return True;
+	      }
+	      return False;
+	    }
+	    $file_number = 1;    
+	    $upload_dir = "/var/www/html/cws/";
+	    $file_extension =  strtolower(pathinfo($file_source,PATHINFO_EXTENSION));
+	    if($file_extension == "cws")
+	    {
+	      $filename = basename($file_source,".".$file_extension);
+	      $printer_xml = simplexml_load_file("printer.xml");
+	      $cws_id = ((int)$printer_xml->print_no)+1;
+	      // Deal with this later
+	      $printer_xml->print_no = $cws_id;
+	      $printer_xml->asXML("printer.xml");
+	      while(check_file_exists(basename($file_source,".".$file_extension)))
+	      {
+	        $filename = basename($file_source,".".$file_extension)."_".$file_number.".".$file_extension;
+	        $file_number = $file_number+1;
+	      }
 
-      exec("sudo cp \"".$file_source."\" /var/www/html/cws/".$cws_id.".cws");
-      $uploaded =1;
-      // echo "sudo chown pi:pi ".$file_upload_path;
-      exec("mkdir cws/".$cws_id);
-      // system("mv $file_upload_path cws/".$filename);
-      exec("sudo 7z e cws/".$cws_id.".cws -ocws/".$cws_id."/");
-      exec("sudo chmod -R 777 /var/www/html/cws/*");
-      $manifest_xml = simplexml_load_file("cws/".$cws_id."/manifest.xml");
-      $slices_xml_element = $manifest_xml->Slices->children();
-      $slices = count($slices_xml_element);
-      $original_name = pathinfo($manifest_xml->GCode->name,PATHINFO_FILENAME);
-      // echo "<script>alert('name:".$original_name."')</script>";
-
-
-      $slicing_config_xml = simplexml_load_file("cws/".$cws_id."/Taz3D.slicing");
-      $blank_time = $slicing_config_xml->BlankTime;
-      $selected_resin = $slicing_config_xml->SelectedInk;
-      foreach ($slicing_config_xml->{'InkConfig'} as $resin)
-      {
-        if((string)$resin->Name == $selected_resin)
-        {
-          $slice_height = (int)round(((float)$resin->SliceHeight * 1000));
-          $layer_exposure = $resin->LayerTime;
-          $bottom_exposure = $resin->FirstLayerTime;
-          $number_bottom_layers = $resin->NumberofBottomLayers;
-        }
-      }
-      $print_time = 10+(($bottom_exposure/1000)*$number_bottom_layers)+(($blank_time/1000)*$slices)+(($layer_exposure/1000)*($slices-$number_bottom_layers));
-      $cws_files_xml = simplexml_load_file('cws_files.xml');
-      $print = $cws_files_xml->addChild('print');
-      $print->addChild('cws_id',$cws_id);        
-      $print->addChild('filename', basename("cws/".$filename,".".$file_extension));
-      $print->addChild('slices', $slices);
-      $print->addChild('original_name',$original_name);
-      $print->addChild('print_time', gmdate("H:i:s", $print_time));
-      $print->addChild('last_printed', 0);
-      $print->addChild('uploaded', time());
-      $print->addChild('blank_time',$blank_time);
-      $print->addChild('selected_resin',$selected_resin);
-      $print->addChild('slice_height',$slice_height);
-      $print->addChild('layer_exposure',$layer_exposure);
-      $print->addChild('bottom_exposure',$bottom_exposure);
-      $print->addChild('number_bottom_layers',$number_bottom_layers);
-      $cws_files_xml->asXML("cws_files.xml");
+	      exec("sudo cp \"".$file_source."\" /var/www/html/cws/".$cws_id.".cws");
+	      $uploaded =1;
+	      // echo "sudo chown pi:pi ".$file_upload_path;
+	      exec("mkdir cws/".$cws_id);
+	      // system("mv $file_upload_path cws/".$filename);
+	      exec("sudo 7z e cws/".$cws_id.".cws -ocws/".$cws_id."/");
+	      exec("sudo chmod -R 777 /var/www/html/cws/*");
+	      $manifest_xml = simplexml_load_file("cws/".$cws_id."/manifest.xml");
+	      $slices_xml_element = $manifest_xml->Slices->children();
+	      $slices = count($slices_xml_element);
+	      $original_name = pathinfo($manifest_xml->GCode->name,PATHINFO_FILENAME);
+	      // echo "<script>alert('name:".$original_name."')</script>";
 
 
-    }
-    if($uploaded)
-      echo "1";
-    else
-      echo "0";
+	      $slicing_config_xml = simplexml_load_file("cws/".$cws_id."/Taz3D.slicing");
+	      $blank_time = $slicing_config_xml->BlankTime;
+	      $selected_resin = $slicing_config_xml->SelectedInk;
+	      foreach ($slicing_config_xml->{'InkConfig'} as $resin)
+	      {
+	        if((string)$resin->Name == $selected_resin)
+	        {
+	          $slice_height = (int)round(((float)$resin->SliceHeight * 1000));
+	          $layer_exposure = $resin->LayerTime;
+	          $bottom_exposure = $resin->FirstLayerTime;
+	          $number_bottom_layers = $resin->NumberofBottomLayers;
+	        }
+	      }
+	      $print_time = 10+(($bottom_exposure/1000)*$number_bottom_layers)+(($blank_time/1000)*$slices)+(($layer_exposure/1000)*($slices-$number_bottom_layers));
+	      $cws_files_xml = simplexml_load_file('cws_files.xml');
+	      $print = $cws_files_xml->addChild('print');
+	      $print->addChild('cws_id',$cws_id);        
+	      $print->addChild('filename', basename("cws/".$filename,".".$file_extension));
+	      $print->addChild('slices', $slices);
+	      $print->addChild('original_name',$original_name);
+	      $print->addChild('print_time', gmdate("H:i:s", $print_time));
+	      $print->addChild('last_printed', 0);
+	      $print->addChild('uploaded', time());
+	      $print->addChild('blank_time',$blank_time);
+	      $print->addChild('selected_resin',$selected_resin);
+	      $print->addChild('slice_height',$slice_height);
+	      $print->addChild('layer_exposure',$layer_exposure);
+	      $print->addChild('bottom_exposure',$bottom_exposure);
+	      $print->addChild('number_bottom_layers',$number_bottom_layers);
+	      $cws_files_xml->asXML("cws_files.xml");
+
+
+	    }
+	    if($uploaded)
+	      echo "1";
+	    else
+	      echo "0";
 	}
 
 }
