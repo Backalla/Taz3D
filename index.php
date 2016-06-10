@@ -82,8 +82,6 @@ require_once('allthefunctions.php');
                             <ul class="nav side-menu">
                                 <li onclick="load_page('main.php');return false;"><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a>
                                 </li>
-                                <li onclick="load_page('prints.php');return false;"><a href="#" ><i class="fa fa-bolt"></i> Prints </a>
-                                </li>
                                 <li><a><i class="fa fa-folder-open"></i>Browse files<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
                                         <li onclick="load_page('recent.php');return false;"><a href="#"><span class="fa fa-clock-o"></span> Recent</a>
@@ -172,7 +170,7 @@ require_once('allthefunctions.php');
 
                 <!-- footer content -->
 
-                <footer>
+                <footer class="footer navbar-fixed-bottom">
                     <div class="">
                         <p class="pull-right">TechnoVision 3D DLP printer v0.1Beta |
                             <span class="lead"> <i class="fa fa-paper-plane"></i> TechnoVision Labs</span>

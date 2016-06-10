@@ -11,6 +11,7 @@ Z_HEIGHT = -165
 def display_slice(image_path, layer_time):
   system("(sleep %d; kill $(pgrep fbi) ) &" %(layer_time/1000))
   system("fbi -noverbose '%s'" %(image_path))
+  system("clear")
 
 def get_printer_info(field):
   printer_xml = ET.parse('printer.xml')
@@ -32,6 +33,7 @@ def log(s):
   time_log = time_now+" : "+s+"\n"
   log_file.write(time_log)
   log_file.close()
+
 
 def reset_printer():
   set_printer_info('state',1)
@@ -65,10 +67,10 @@ def set_printer_info(field,value):
   printer_xml.write("printer.xml",xml_declaration=True,encoding='utf-8',method="xml")
 
 def shutter_close():
-  send_gcode("G1 X-10 F500")
+  send_gcode("G1 X-3 F500")
 
 def shutter_open():
-  send_gcode("G1 X10 F500")
+  send_gcode("G1 X3 F500")
 
 
 
@@ -83,6 +85,7 @@ try:
   dlp_serial.write("\r\n\r\n")
   time.sleep(2)
   dlp_serial.flushInput()
+  system("fbset -xres 1920 -yres 1080 -match")
 except:
   set_printer_info('message','Printer USB not connected')
   log("Printer USB not connected")
